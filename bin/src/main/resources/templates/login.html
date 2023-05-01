@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link th:href="@{/css/login.css}" rel="stylesheet" />
+</head>
+
+<h2>Interqu Sign Up Form</h2>
+<div class="container" id="container">
+  <div class="form-container sign-up-container">
+    <form action="#">
+      <h1>Create Account</h1>
+      <div class="social-container">
+        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+      <span>or use your email for registration</span>
+      <input type="text" placeholder="Name" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button>Sign Up</button>
+    </form>
+  </div>
+  <div class="form-container sign-in-container">
+    <form action="#">
+      <h1 class="spacer">Welcome Back!</h1>
+      <div class="field field_v2">
+        <label for="last-name" class="ha-screen-reader">Email</label>
+        <input id="last-name" class="field__input" placeholder="e.g. me@example.com">
+        <span class="field__label-wrap" aria-hidden="true">
+          <span class="field__label">Email</span>
+        </span>
+      </div>
+      <div class="field field_v2">
+        <label for="last-name" class="ha-screen-reader">Password</label>
+        <input id="last-name" class="field__input" type="password" placeholder="**********">
+        <span class="field__label-wrap" aria-hidden="true">
+          <span class="field__label">Password</span>
+        </span>
+      </div>
+      <a href="#">Forgot your password?</a>
+      <button>Sign In</button>
+      <p>or</p>
+      <!-- Temp -->
+      <div class="row oauth">
+        <div class="col-md-3">
+          <a class="btn btn-outline-dark" href="/users/googleauth" role="button" style="text-transform:none">
+            <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+            Login with Google
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left">
+        <h1>Welcome Back!</h1>
+        <p>To keep connected with us please login with your personal info</p>
+        <button class="ghost" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay-panel overlay-right">
+        <h1>Hello, Friend!</h1>
+        <p>Enter your personal details and start journey with us</p>
+        <button class="ghost" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
+<footer>
+  <p>
+    Interqu Prototype I - Accounts are created by invite only. Click <a href="/wait-list">here</a> to join the wait
+    list
+  </p>
+</footer>
+
+</html>

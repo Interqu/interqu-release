@@ -1,0 +1,27 @@
+{
+  "name": "interqu-release",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildcss": "tailwindcss -i src/main/resources/static/css/style.tailwind.css -o src/main/resources/static/css/style.build.tailwind.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Interqu/interqu-release.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Interqu/interqu-release/issues"
+  },
+  "homepage": "https://github.com/Interqu/interqu-release#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.3.0"
+  }
+}
