@@ -41,9 +41,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure csrf
-		http.csrf().disable().authorizeHttpRequests().requestMatchers("/register", "/login", "/css/**", "/js/**").permitAll().requestMatchers("/user/**")
-				.authenticated().and().httpBasic();
-		http.logout().invalidateHttpSession(true).deleteCookies("JSESSION", "jwt");
+		http.csrf().disable();
+		http.authorizeHttpRequests().requestMatchers("/register", "/login", "/dev/interview", "/css/**", "/js/**").permitAll();
+		http.authorizeHttpRequests().requestMatchers("/user/**")
+				.authenticated();
+		http.httpBasic();
+		// http.authorizeHttpRequests().requestMatchers("/dev/interview").permitAll();
+		// http.logout().invalidateHttpSession(true).deleteCookies("JSESSION", "jwt");
 		// http.authorizeHttpRequests().requestMatchers("/test").permitAll();
 		return http.build();
 	}
