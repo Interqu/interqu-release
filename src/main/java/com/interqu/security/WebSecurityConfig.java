@@ -42,7 +42,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure csrf
 		http.csrf().disable();
-		http.authorizeHttpRequests().requestMatchers("/register", "/login", "/dev/interview", "/css/**", "/js/**").permitAll();
+		http.authorizeHttpRequests()
+				.requestMatchers("/register", "/login", "/dev/**", "/css/**", "/js/**")
+				.permitAll();
 		http.authorizeHttpRequests().requestMatchers("/user/**")
 				.authenticated();
 		http.httpBasic();

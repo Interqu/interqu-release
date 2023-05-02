@@ -6,14 +6,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class InterviewController {
-    
-	private final String PAGE_PATH = "";
-	private final String URL_PATH = "";
+
+    private final String PAGE_PATH = "";
+    private final String URL_PATH = "";
 
     // TODO disable all access feature
     @GetMapping("dev/interview")
-    public ModelAndView interviewPractice(){
+    public ModelAndView interviewPractice() {
         return new ModelAndView(PAGE_PATH + "/interview-practice");
-    } 
+    }
+
+    @GetMapping("dev/interview/result")
+    public ModelAndView interviewResult() {
+        return new ModelAndView(PAGE_PATH + "/interview-result");
+    }
 
 }
