@@ -48,6 +48,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		http.authorizeHttpRequests().requestMatchers("/user/**")
 				.authenticated();
 		http.httpBasic();
+		http.authorizeHttpRequests().requestMatchers("/dev/configure-account").permitAll();
 		// http.authorizeHttpRequests().requestMatchers("/dev/interview").permitAll();
 		// http.logout().invalidateHttpSession(true).deleteCookies("JSESSION", "jwt");
 		// http.authorizeHttpRequests().requestMatchers("/test").permitAll();
