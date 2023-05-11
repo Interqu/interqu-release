@@ -11,6 +11,11 @@ public class InterviewController {
     private final String PAGE_PATH = "";
     private final String URL_PATH = "";
 
+    @GetMapping("dev/interview-selection")
+    public ModelAndView interviewSelection(){
+        return new ModelAndView(PAGE_PATH + "/interview-selection");
+    }
+
     // TODO disable all access feature
     @GetMapping("dev/interview")
     public ModelAndView interviewPractice() {
