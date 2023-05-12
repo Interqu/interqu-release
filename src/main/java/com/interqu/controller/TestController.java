@@ -17,17 +17,18 @@ public class TestController {
 	@GetMapping("/test")
 	@ResponseBody
 	public String test() {
-		User user = new User("Derek","Li","rejie.li@gmail.com","12345TestPassword");
+		User user = new User("Derek", "Li", "rejie.li@gmail.com", "12345TestPassword");
 		System.out.println(user);
 		userRepo.save(user);
 		return "recieved!";
 	}
-	
+
 	@GetMapping("/test1")
 	@ResponseBody
 	public String test1() {
-//		userRepo.save(new User("Derek","Li","rejie.li@gmail.com","12345TestPassword"));
+		// userRepo.save(new
+		// User("Derek","Li","rejie.li@gmail.com","12345TestPassword"));
 		return "recieved!";
 	}
-	
+
 }
