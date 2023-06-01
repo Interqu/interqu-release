@@ -41,9 +41,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure csrf
+		// TODO ALSO CHANGE API TO SECURE
 		http.csrf().disable();
+		http.cors().disable();
 		http.authorizeHttpRequests()
-				.requestMatchers("/register", "/login", "/dev/**", "/css/**", "/js/**")
+				.requestMatchers("/register", "/login", "/dev/**", "/api/**", "/css/**", "/js/**")
 				.permitAll();
 		http.authorizeHttpRequests().requestMatchers("/user/**")
 				.authenticated();
