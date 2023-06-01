@@ -1,14 +1,16 @@
 package com.interqu.interviews.questions;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("interview_tips")
 public class QuestionTips {
 
     private String question;
-    private String tips;
+    private List<String> tips;
 
-    public QuestionTips(String question, String tips) {
+    public QuestionTips(String question, List<String> tips) {
         this.question = question;
         this.tips = tips;
     }
@@ -21,11 +23,11 @@ public class QuestionTips {
         this.question = question;
     }
 
-    public String getTips() {
+    public List<String> getTips() {
         return tips;
     }
 
-    public void setTips(String tips) {
+    public void setTips(List<String> tips) {
         this.tips = tips;
     }
 

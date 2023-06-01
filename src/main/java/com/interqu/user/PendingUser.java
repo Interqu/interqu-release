@@ -5,14 +5,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("pending-user")
 public class PendingUser {
 
-    String hash;
+    String registrationCode;
     String email;
     String fullName;
 
-    public PendingUser(String email, String fullName, String hash) {
+    public PendingUser(String email, String fullName, String registrationCode) {
         this.email = email;
         this.fullName = fullName;
-        this.hash = hash;
+        this.registrationCode = registrationCode;
     }
 
     public String getEmail() {
@@ -31,12 +31,12 @@ public class PendingUser {
         this.fullName = fullName;
     }
 
-    public String gethash() {
-        return hash;
+    public String getRegistrationCode() {
+        return registrationCode;
     }
 
-    public void sethash(String hash) {
-        this.hash = hash;
+    public void setRegistrationCode(String registrationCode) {
+        this.registrationCode = registrationCode;
     }
 
 }

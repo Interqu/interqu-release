@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("interview_questions_with_tips")
+@Document("interview_questions")
 public class Question {
 
     private String position;
@@ -14,15 +14,13 @@ public class Question {
     private List<String> positiveIndicators = new ArrayList<String>();
     // What qinterviewers dont want to see (Things to avoid in the interview)
     private List<String> negativeIndicators = new ArrayList<String>();
-    private String tipsForAnswer;
 
     public Question(String position, String question, List<String> positiveIndicators,
-            List<String> negativeIndicators, String tipsForAnswer) {
+            List<String> negativeIndicators) {
         this.position = position;
         this.question = question;
         this.positiveIndicators = positiveIndicators;
         this.negativeIndicators = negativeIndicators;
-        this.tipsForAnswer = tipsForAnswer;
     }
 
     public String getQuestion() {
@@ -65,18 +63,10 @@ public class Question {
         this.position = position;
     }
 
-    public String getTipsForAnswer() {
-        return tipsForAnswer;
-    }
-
-    public void setTipsForAnswer(String tipsForAnswer) {
-        this.tipsForAnswer = tipsForAnswer;
-    }
-
     @Override
     public String toString() {
         return "Question [position=" + position + ", question=" + question + ", positiveIndicators="
-                + positiveIndicators + ", negativeIndicators=" + negativeIndicators + ", tipsForAnswer=" + tipsForAnswer
+                + positiveIndicators + ", negativeIndicators=" + negativeIndicators
                 + "]";
     }
 }

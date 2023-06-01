@@ -8,7 +8,7 @@ import com.interqu.user.PendingUser;
 @Service
 public interface PendingUserRepository extends MongoRepository<PendingUser, String> {
 
-    PendingUser findByHash(String hash);
+    PendingUser findByRegistrationCode(String registrationCode);
 
     PendingUser findByEmail(String email);
 
