@@ -67,3 +67,16 @@ jobs:
         with:
           push: true
           tags: lefanhu/interqu-spring-boot:latest
+
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd interqu-spring-boot
+            docker compose down
+            docker compose pull
+            docker compose up -d
+            docker ps
