@@ -1,18 +1,24 @@
 package com.interqu.user;
 
+import java.util.Set;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("pending-user")
+import com.interqu.roles.Role;
+
+@Document("pending_user")
 public class PendingUser {
 
-    String registrationCode;
-    String email;
-    String fullName;
+    private String registrationCode;
+    private String email;
+    private Set<Role> roles;
+    private String fullName;
 
-    public PendingUser(String email, String fullName, String registrationCode) {
+    public PendingUser(String email, String fullName, String registrationCode, Set<Role> roles) {
         this.email = email;
         this.fullName = fullName;
         this.registrationCode = registrationCode;
+        this.roles = roles;
     }
 
     public String getEmail() {
@@ -37,6 +43,14 @@ public class PendingUser {
 
     public void setRegistrationCode(String registrationCode) {
         this.registrationCode = registrationCode;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
 }

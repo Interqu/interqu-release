@@ -1,135 +1,130 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
-
 body {
-  font-family: "Montserrat", sans-serif;
-  /* text-align: center; */
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(120deg, #e8f3ff, #f1e5ff);
+  color: #000000;
 }
 
-body > div {
-  display: flex;
-  flex-direction: row;
+#container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
-
-.form {
+#title-container {
   text-align: center;
-  justify-content: center;
+}
+h1 {
+  font-size: xx-large;
+  margin-top: 30px;
 }
 
-label {
-  font-size: xx-large;
+h2 {
+  font-weight: 300;
+}
+.selection-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.select-container {
+  text-align: center;
+}
+select {
+  appearance: none;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  width: 400px;
+}
+.box {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: auto;
   margin-bottom: 10px;
 }
 
-select {
-  width: 80%;
-  height: 50px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding-left: 5px;
-  padding: 10px;
-  font-size: 18px;
-  font-family: "Open Sans", sans-serif;
-  color: #555;
-  background-color: rgb(255, 255, 255);
-  background-image: none;
-  border: 1px solid rgb(41, 18, 18);
+select:hover,
+select:focus {
+  border-color: #666;
+  outline: none;
+}
+.center {
+  text-align: center;
+}
+li.spacer {
+  margin-bottom: 15px;
 }
 
-select > option {
-  font-size: 18px;
-  font-family: "Open Sans", sans-serif;
-  color: #555;
-  background-color: rgb(247, 247, 247);
-  background-image: none;
-  font-size: 18px;
-  height: 50px;
-  padding: 15px;
-  border: 1px solid rgb(41, 18, 18);
+.green-text {
+  color: green;
+}
+.review-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+}
+.red-text {
+  color: red;
 }
 
-#question_details {
-  width: 60%;
-  height: 50%;
-  margin-top: 20px;
-  border-radius: 10px;
-  border-width: 2px;
-  border-color: red;
-  border-style: solid;
+.small-tips {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
 }
 
 button {
-  margin-top: 50px;
-  background-color: #4caf50;
-  /* Green background */
-  color: white;
-  /* Text color */
-  border: none;
-  /* No border */
+  display: inline-block;
   padding: 12px 24px;
-  /* Padding */
   font-size: 16px;
-  /* Font size */
+  font-weight: bold;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #4caf50;
+  border: none;
   border-radius: 4px;
-  /* Rounded corners */
-  cursor: pointer;
-  /* Cursor on hover */
-  transition: background-color 0.3s ease;
-  /* Smooth transition on hover */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 button:hover {
-  background-color: #3e8e41;
-  /* Darker green on hover */
+  background-color: #45a049;
+  transform: scale(1.05);
 }
 
-/* The Modal (background) */
-.modal {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
-  padding-top: 100px;
-  /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%;
-  /* Full width */
-  height: 100%;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
 }
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+#submit {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+#user {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.fade-element {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
 }
-
-span > li {
-  margin-top: 20px;
+.fade-out {
+  opacity: 0;
+  transition: none;
+}
+.fade-in {
+  opacity: 1;
 }

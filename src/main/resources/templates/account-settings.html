@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Settings</title>
+    <link th:href="@{/css/account-settings.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Account Settings</h1>
+
+    <section class="profile-settings">
+      <h2>Profile Settings</h2>
+      <div class="avatar-container">
+        <img src="avatar.jpg" alt="Avatar" />
+        <button id="change-avatar-btn">Change Avatar</button>
+      </div>
+      <form id="profile-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Username" />
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email Address" />
+        <label for="bio">Bio:</label>
+        <textarea id="bio" placeholder="Bio"></textarea>
+        <button type="submit" id="update-profile-btn">Update Profile</button>
+      </form>
+    </section>
+
+    <section class="password-settings">
+      <h2>Password Settings</h2>
+      <form id="password-form">
+        <label for="current-password">Current Password:</label>
+        <input
+          type="password"
+          id="current-password"
+          placeholder="Current Password"
+        />
+        <label for="new-password">New Password:</label>
+        <input type="password" id="new-password" placeholder="New Password" />
+        <label for="confirm-password">Confirm New Password:</label>
+        <input
+          type="password"
+          id="confirm-password"
+          placeholder="Confirm New Password"
+        />
+        <button type="submit" id="update-password-btn">Update Password</button>
+      </form>
+    </section>
+
+    <section class="notification-settings">
+      <h2>Notification Settings</h2>
+      <div class="notification-option">
+        <input type="checkbox" id="email-notifications" />
+        <label for="email-notifications">Email Notifications</label>
+      </div>
+      <div class="notification-option">
+        <input type="checkbox" id="push-notifications" />
+        <label for="push-notifications">Push Notifications</label>
+      </div>
+      <div class="notification-option">
+        <input type="checkbox" id="sms-notifications" />
+        <label for="sms-notifications">SMS Notifications</label>
+      </div>
+    </section>
+
+    <section class="privacy-settings">
+      <h2>Privacy Settings</h2>
+      <div class="privacy-option">
+        <input type="checkbox" id="public-profile" />
+        <label for="public-profile">Public Profile</label>
+      </div>
+      <div class="privacy-option">
+        <input type="checkbox" id="search-engines" />
+        <label for="search-engines"
+          >Allow Search Engines to Index Profile</label
+        >
+      </div>
+      <div class="privacy-option">
+        <input type="checkbox" id="online-status" />
+        <label for="online-status">Show Online Status</label>
+      </div>
+    </section>
+
+    <section class="security-settings">
+      <h2>Security Settings</h2>
+      <div class="security-option">
+        <input type="checkbox" id="two-factor-authentication" />
+        <label for="two-factor-authentication">Two-Factor Authentication</label>
+        <div class="toggle-btn">
+          <input type="checkbox" id="two-factor-authentication-toggle" />
+          <label
+            class="toggle-switch"
+            for="two-factor-authentication-toggle"
+          ></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="delete-account">
+      <h2>Delete Account</h2>
+      <button id="delete-account-btn">Delete Account</button>
+    </section>
+
+    <script type="text/javascript" th:src="@{/js/account-settings.js}"></script>
+  </body>
+</html>
