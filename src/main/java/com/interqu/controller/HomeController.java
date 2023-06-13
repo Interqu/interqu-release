@@ -12,7 +12,7 @@ public class HomeController {
 
 	@GetMapping(URL_PATH + "/")
 	public ModelAndView home() {
-		return new ModelAndView(PAGE_PATH + "/home");
+		return new ModelAndView(PAGE_PATH + "homepage");
 	}
 
 }

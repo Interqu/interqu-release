@@ -9,5 +9,7 @@ import com.interqu.user.User;
 public interface UserRepository extends MongoRepository<User,String>{
 	
 	public User findByEmail(String email);
+
+	public User findByVerificationCode(String verificationCode);
 	
 }

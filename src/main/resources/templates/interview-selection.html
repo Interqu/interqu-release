@@ -4,18 +4,32 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link th:href="@{/css/interview-selection.css}" rel="stylesheet" />
+    <title>Interview Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <title>Interqu - Interview Selection</title>
+    <script th:inline="javascript">
+      $(document).ajaxSend(function (event, xhr) {
+        xhr.setRequestHeader(
+          /*[[${_csrf.headerName}]]*/ "",
+          /*[[${_csrf.token}]]*/ ""
+        );
+      });
+    </script>
+    <link th:href="@{/css/interview-selection.css}" rel="stylesheet" />
   </head>
-
   <body>
-    <div>
-      <div class="form">
+    <div id="container">
+      <div id="title-container">
         <h1>Interqu Practice Interview Selection</h1>
-        <div id="role">
-          <label>Interview Position</label>
-          <br />
+      </div>
+      <div class="selection-container">
+        <div id="position-selection-container" class="select-container">
+          <h2>Interview Position</h2>
           <select id="position" onchange="positionChange()">
             <option
               th:each="position : ${positions}"
@@ -24,33 +38,35 @@
             ></option>
           </select>
         </div>
-        <br />
-        <div id="question">
-          <label>Interview Question</label>
-          <br />
+        <div id="question" class="select-container">
+          <h2>Interview Question</h2>
           <select id="questions" onchange="questionChange()"></select>
         </div>
       </div>
-      <div id="question_details">
-        <label>Question: <span id="question_title"></span></label>
-        <div>
-          <h2>Objective:</h2>
-          <table id="objective"></table>
+      <div class="review-container">
+        <div class="box fade" id="1box">
+          <h2><b>Position:&nbsp;</b><span id="position_review"></span></h2>
         </div>
-        <div>
-          <h2>Avoid:</h2>
-          <table id="avoid"></table>
+        <div class="box fade" id="2box">
+          <h2><b>Question:&nbsp;</b><span id="question_review"></span></h2>
+        </div>
+        <div class="small-tips box fade" id="3box">
+          <div id="mention">
+            <h2 class="green-text center"><b>Try to mention</b></h2>
+            <ul id="objective-ul"></ul>
+          </div>
+          <div id="avoid">
+            <h2 class="red-text center"><b>Try to avoid</b></h2>
+            <ul id="avoid-ul"></ul>
+          </div>
+        </div>
+        <div id="4box" class="box fade">
+          <h2><b>How to answer:</b></h2>
+          <span id="tipInfo"> </span>
         </div>
       </div>
-    </div>
-    <button id="tips">Tips for answering</button>
-    <button class="submit">Next</button>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <span id="tipInfo"></span>
+      <div id="submit" class="fade">
+        <button id="submitBtn" onclick="submit()">Practice!</button>
       </div>
     </div>
   </body>
@@ -62,6 +78,7 @@
       var question_select = document.getElementById("questions");
       for (var i = 0; i < displayQuestions.length; i++) {
         if (displayQuestions[i].question == question_select.value) {
+          console.log(displayQuestions[i]);
           return displayQuestions[i];
         }
       }
@@ -71,6 +88,8 @@
     function positionChange() {
       posDoc.innerHTML = "";
       displayQuestions = [];
+      var position_review = document.getElementById("position_review");
+      position_review.innerHTML = document.getElementById("position").value;
       questions.forEach(function (question) {
         if (question.position == document.getElementById("position").value) {
           var option = document.createElement("option");
@@ -84,48 +103,58 @@
     }
     questionChange();
     function questionChange() {
+      var elements = document.getElementsByClassName("fade");
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].classList.add("fade-element");
+        elements[i].classList.remove("fade-in");
+        elements[i].classList.add("fade-out");
+      }
       var question_select = document.getElementById("questions");
-      var question_title = document.getElementById("question_title");
+      var question_title = document.getElementById("question_review");
       question_title.innerHTML = question_select.value;
       var info = getCurrentQuestionInfo();
-      console.log(info);
       if (info != null) {
-        var objective = document.getElementById("objective");
+        var objective = document.getElementById("objective-ul");
         objective.innerHTML = "";
         for (var i = 0; i < info.positiveIndicators.length; i++) {
           var liObj = document.createElement("li");
           liObj.innerHTML = info.positiveIndicators[i];
           objective.append(liObj);
         }
-        var avoid = document.getElementById("avoid");
+        var avoid = document.getElementById("avoid-ul");
         avoid.innerHTML = "";
-        for (var i = 0; i < info.positiveIndicators.length; i++) {
+        for (var i = 0; i < info.negativeIndicators.length; i++) {
           var liObj = document.createElement("li");
           liObj.innerHTML = info.negativeIndicators[i];
           avoid.append(liObj);
         }
       }
+      displayTips();
+      animation();
     }
 
-    // Get the modal
-    var modal = document.getElementById("myModal");
+    function animation() {
+      var elements = document.getElementsByClassName("fade");
+      var delay = 50;
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("tips");
+      for (let i = 0; i < elements.length; i++) {
+        (function (index) {
+          setTimeout(function () {
+            elements[index].classList.remove("fade-out");
+            elements[index].classList.add("fade-in");
+          }, delay);
+          delay += 75; // Adjust the delay time here (in milliseconds)
+        })(i);
+      }
+    }
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function () {
-      modal.style.display = "block";
-      // TODO change to newer method
+    function displayTips() {
       $.ajax({
         url: "/api/getInterviewTip",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
-          question: getCurrentQuestionInfo().question,
+          questionId: getCurrentQuestionInfo().questionId,
         }),
         success: function (result) {
           document.getElementById("tipInfo").innerHTML = "";
@@ -135,6 +164,7 @@
           }
           result.forEach(function (res) {
             var tip = document.createElement("li");
+            tip.classList.add("spacer");
             tip.innerHTML = res;
             document.getElementById("tipInfo").append(tip);
           });
@@ -144,22 +174,10 @@
             "Could not retrive Data.";
         },
       });
-    };
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-      modal.style.display = "none";
-    };
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    };
+    }
+    function submit() {
+      window.location.href =
+        "/user/interview/" + getCurrentQuestionInfo().questionId;
+    }
   </script>
-  <script
-    type="text/javascript"
-    th:src="@{/js/interview-selection.js}"
-  ></script>
 </html>
