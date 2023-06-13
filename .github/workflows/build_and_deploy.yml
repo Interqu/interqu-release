@@ -27,13 +27,13 @@ jobs:
         run: mvn clean package
 
       - name: Copy Artifact
-        run: mkdir staging && cp target/*.jar staging
+        run: mkdir staging && cp target/*.jar staging/interqu-spring-boot.jar
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: spring-boot-jar
-          path: staging
+          path: staging/*.jar
           retention-days: 30
 
   build_image:
@@ -48,10 +48,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: spring-boot-jar
-          path: target/interqu-spring-boot.jar
+          path: target
 
       - name: List files
-        run: ls ./ && ls target
+        run: ls -R target
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
