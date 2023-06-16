@@ -29,7 +29,7 @@ import net.bytebuddy.utility.RandomString;
 @Controller
 @RequestMapping("/api/user/")
 public class UserAPI {
-    
+
 	@Autowired
 	private UserRepository userRepo;
 
@@ -59,6 +59,7 @@ public class UserAPI {
 		inccorectInfo.addObject("Error", "Invalid Login Credentials");
 		return inccorectInfo;
 	}
+
 	@PostMapping("/register")
 	@ResponseBody
 	public String registerUser(@RequestBody User user, HttpServletRequest request) {
@@ -77,23 +78,25 @@ public class UserAPI {
 			String encodedPassword = passwordEncoder.encode(user.getPassword());
 			user.setPassword(encodedPassword);
 			user.setId(UUID.randomUUID().toString());
-			//TODO implement role repo;
+			// TODO implement role repo;
 			user.addRole(roleRepo.findByName("ADMIN"));
 			// Generating verification code TODO
 			String randomCode = RandomString.make(64);
 			user.setVerificationCode(randomCode);
 			user.setVerified(false);
 			userRepo.save(user);
-			//Send Verification Email;
+			// Send Verification Email;
 			emailSenderService.sendUserVerificationCode(user);
 			// ModelAndView modelAndView = new ModelAndView("/registerSuccess");
 			// return modelAndView;
 			return "Success! Please check email: " + user.getEmail();
 
 		} catch (Exception e) {
-			ModelAndView modelAndView = new ModelAndView( "/login");
-			// ErrorReport error = new ErrorReport("SignUp Error", "Register User", e.getMessage());
-			// modelAndView.addObject("Unexpected Error", "An unexpected error has occured.");
+			ModelAndView modelAndView = new ModelAndView("login");
+			// ErrorReport error = new ErrorReport("SignUp Error", "Register User",
+			// e.getMessage());
+			// modelAndView.addObject("Unexpected Error", "An unexpected error has
+			// occured.");
 			e.printStackTrace();
 			return "Unexpected error has occrred";
 		}
@@ -102,17 +105,17 @@ public class UserAPI {
 	// TODO make it only so my role can access this
 	@PostMapping("/dev/addBetaUser")
 	@ResponseBody
-	public String addBetaUser(@RequestBody PendingUser pendingUser){
-		try{
-			if(pendingUser.getEmail()!=null && pendingUser.getFullName()!=null){
+	public String addBetaUser(@RequestBody PendingUser pendingUser) {
+		try {
+			if (pendingUser.getEmail() != null && pendingUser.getFullName() != null) {
 				String randomCode = RandomString.make(64);
 				pendingUser.setRegistrationCode(randomCode);
 				pendingUserRepo.insert(pendingUser);
 				emailSenderService.sendTestUserRegistrationEmail(pendingUser);
 				return "Email has been sent!";
 			}
-		}catch(Exception e){
-			
+		} catch (Exception e) {
+
 		}
 		return "An unexpected error has occred";
 	}

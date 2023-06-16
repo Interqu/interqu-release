@@ -40,13 +40,13 @@ public class UserController {
 
 	@GetMapping(URL_PATH + "/login")
 	public ModelAndView login() {
-		return new ModelAndView(PAGE_PATH + "/login");
+		return new ModelAndView(PAGE_PATH + "login");
 	}
 
 	@GetMapping("/register" + Constants.USER_VERIFICATION_URL + "{verificationCode}")
 	public ModelAndView verifyUser(@PathVariable String verificationCode) {
 		User user = userRepo.findByVerificationCode(verificationCode);
-		if(user!=null && !user.isVerified()){
+		if (user != null && !user.isVerified()) {
 			user.setVerified(true);
 			userRepo.save(user);
 			ModelAndView mvc = new ModelAndView("verification-success");
@@ -55,33 +55,36 @@ public class UserController {
 		return new ModelAndView("link-expired");
 	}
 
-
-//	@GetMapping("dev/configure-account")
-//	public ModelAndView configureUserAccount() {
-//		// Look up id in database
-//		PendingUser pendingUser = pendingUserRepository.findByEmail("99sad");
-//		if (pendingUser == null) {
-//			return new ModelAndView("configure-account");
-//		}
-//		return new ModelAndView("Error").addObject("Error", "This account has already been configured!");
-//	}
-//
-//	@PostMapping("configure-account")
-//	public ModelAndView configureUserAccount(@RequestBody User user, @RequestParam String id) {
-//		// Delete pending user from pending db
-//		PendingUser pendingUser = pendingUserRepository.findByEmail(id);
-//		if (pendingUser != null) {
-//			pendingUserRepository.delete(pendingUser);
-//			userRepo.insert(user);
-//			return new ModelAndView("login").addObject("Successful", "Successfully configured your account!");
-//		}
-//		return new ModelAndView("Error").addObject("Error", "This account has already been configured!");
-//	}
+	// @GetMapping("dev/configure-account")
+	// public ModelAndView configureUserAccount() {
+	// // Look up id in database
+	// PendingUser pendingUser = pendingUserRepository.findByEmail("99sad");
+	// if (pendingUser == null) {
+	// return new ModelAndView("configure-account");
+	// }
+	// return new ModelAndView("Error").addObject("Error", "This account has already
+	// been configured!");
+	// }
+	//
+	// @PostMapping("configure-account")
+	// public ModelAndView configureUserAccount(@RequestBody User user,
+	// @RequestParam String id) {
+	// // Delete pending user from pending db
+	// PendingUser pendingUser = pendingUserRepository.findByEmail(id);
+	// if (pendingUser != null) {
+	// pendingUserRepository.delete(pendingUser);
+	// userRepo.insert(user);
+	// return new ModelAndView("login").addObject("Successful", "Successfully
+	// configured your account!");
+	// }
+	// return new ModelAndView("Error").addObject("Error", "This account has already
+	// been configured!");
+	// }
 
 	@GetMapping("/dev" + Constants.BETA_USER_REGISTER_URL + "{registrationCode}")
 	public ModelAndView registerBetaUser(@PathVariable String registrationCode) {
 		PendingUser pendingUser = pendingUserRepo.findByRegistrationCode(registrationCode);
-		if(pendingUser!=null){
+		if (pendingUser != null) {
 			ModelAndView mvc = new ModelAndView("configure-account");
 			mvc.addObject("name", pendingUser.getFullName());
 			mvc.addObject("email", pendingUser.getEmail());
@@ -89,12 +92,12 @@ public class UserController {
 			return mvc;
 		}
 		return new ModelAndView("link-expired");
-		
+
 	}
 
 	@GetMapping("/dev/createPendingUser")
 	@PreAuthorize("hasRole('DEV') or hasRole('ADMIN')")
-	public ModelAndView createUserPage(HttpServletRequest request){
+	public ModelAndView createUserPage(HttpServletRequest request) {
 		// GET CURRENT ROLE OF LOGGED IN USER
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		// auth.getAuthorities()
@@ -106,15 +109,15 @@ public class UserController {
 	}
 
 	@GetMapping("dev/account-settings")
-	public ModelAndView accountSettings(){
+	public ModelAndView accountSettings() {
 		return new ModelAndView("account-settings");
 	}
 
 	// @PostMapping("dev/createRole/{roleName}")
 	// @ResponseBody
 	// public String createRole(@PathVariable String roleName){
-	// 	Role role = new Role(roleName);
-	// 	roleRepo.save(role);
-	// 	return "Successful";
+	// Role role = new Role(roleName);
+	// roleRepo.save(role);
+	// return "Successful";
 	// }
 }
