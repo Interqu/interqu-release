@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("interview-video-data")
+@Document("interview_video_data")
 public class InterviewVideoData {
     
     @Id

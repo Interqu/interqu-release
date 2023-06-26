@@ -9,6 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.interqu.db.PendingUserRepository;
@@ -82,8 +84,24 @@ public class UserController {
 	public ModelAndView registerBetaUser(@PathVariable String registrationCode) {
 		PendingUser pendingUser = pendingUserRepo.findByRegistrationCode(registrationCode);
 		if(pendingUser!=null){
+			Role admin = roleRepo.findByName("ADMIN");
+			if(pendingUser.getRoles().contains(admin)){
+				ModelAndView mvc = new ModelAndView("configure-admin-account");
+				mvc.addObject("name", pendingUser.getFirstName());
+				mvc.addObject("email", pendingUser.getEmail());
+				mvc.addObject("BetaTestUserAnswer", new BetaTestUserAnswer());
+				return mvc;
+			}
+			Role dev = roleRepo.findByName("ADMIN");
+			if(pendingUser.getRoles().contains(dev)){
+				ModelAndView mvc = new ModelAndView("configure-dev-account");
+				mvc.addObject("name", pendingUser.getFirstName());
+				mvc.addObject("email", pendingUser.getEmail());
+				mvc.addObject("BetaTestUserAnswer", new BetaTestUserAnswer());
+				return mvc;
+			}
 			ModelAndView mvc = new ModelAndView("configure-account");
-			mvc.addObject("name", pendingUser.getFullName());
+			mvc.addObject("name", pendingUser.getFirstName());
 			mvc.addObject("email", pendingUser.getEmail());
 			mvc.addObject("BetaTestUserAnswer", new BetaTestUserAnswer());
 			return mvc;
@@ -110,11 +128,19 @@ public class UserController {
 		return new ModelAndView("account-settings");
 	}
 
-	// @PostMapping("dev/createRole/{roleName}")
+
+
+	// @GetMapping("dev/createRole/{roleName}")
 	// @ResponseBody
 	// public String createRole(@PathVariable String roleName){
 	// 	Role role = new Role(roleName);
 	// 	roleRepo.save(role);
 	// 	return "Successful";
 	// }
+
+	// @GetMapping("settings")
+	// public ModelAndView getUserSettings(HttpServletRequest request){
+
+	// }
+
 }

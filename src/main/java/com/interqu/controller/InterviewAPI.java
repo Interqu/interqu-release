@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,15 +37,13 @@ import com.interqu.interviews.InterviewVideoData;
 import com.interqu.interviews.Position;
 import com.interqu.interviews.questions.Question;
 import com.interqu.interviews.questions.QuestionTips;
+import com.interqu.process.FileService;
 import com.interqu.survey.BetaTestUserAnswer;
 import com.interqu.user.PendingUser;
 import com.interqu.user.User;
 import com.interqu.utils.Utils;
 
 import jakarta.servlet.http.HttpServletRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectResponse;
-import software.amazon.awssdk.services.s3.S3Client;
 
 @Controller
 @RequestMapping("api")
@@ -66,6 +66,9 @@ public class InterviewAPI {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private FileService fileService;
 
     @PostMapping("/getPositions")
     @ResponseBody
@@ -132,14 +135,15 @@ public class InterviewAPI {
     //     return new ArrayList<String>();
     // }
 
-    @PostMapping("/processInterview")
+    @PostMapping("/uploadInterview")
     public ResponseEntity<?> processInterview(HttpServletRequest request, @RequestParam("video") MultipartFile file, @RequestParam("questionId") String questionId){
         InterviewVideoData ivd;
         User user = null;
-        Principal principal = request.getUserPrincipal();        
-        // System.out.println(((UserDetails)principal).getUsername());
-        if(principal instanceof UserDetails){
-            user = userRepo.findByEmail(((UserDetails)principal).getUsername());
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = null;
+        if (principal instanceof UserDetails) {
+             username = ((UserDetails)principal).getUsername();
+             user = userRepo.findByEmail(username);
         }
         try{
             if(user == null){
@@ -153,7 +157,7 @@ public class InterviewAPI {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try{
-           Utils.uploadFile(ivd.getFileName(), file.getInputStream());
+           fileService.uploadFile(ivd.getFileName(), file);
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }catch(Exception e){
             ivdRepo.delete(ivd);
@@ -161,6 +165,11 @@ public class InterviewAPI {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @PostMapping("processInterview")
+    // public ModelAndView processInterview(@PathVariable("fileName") String fileName){
+        
+    // }
 
     //FOR DEV ONLY
     @PostMapping("/insertQuestion")

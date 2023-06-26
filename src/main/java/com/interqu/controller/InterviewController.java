@@ -1,19 +1,22 @@
 package com.interqu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.interqu.db.InterviewQuestionRepository;
 import com.interqu.db.PositionRepository;
 import com.interqu.db.QuestionTipsRepository;
-import com.interqu.interviews.Position;
+import com.interqu.db.UserRepository;
 import com.interqu.interviews.Result;
 import com.interqu.interviews.questions.Question;
+import com.interqu.user.User;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/user/")
@@ -31,6 +34,9 @@ public class InterviewController {
     @Autowired
     private QuestionTipsRepository qtRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     // @GetMapping("insert-position")
     // @ResponseBody
     // public String insertPosition(@PathVariable String position) {
@@ -44,9 +50,15 @@ public class InterviewController {
     // }
 
     @GetMapping("interview-selection")
-    public ModelAndView interviewSelection() {
+    public ModelAndView interviewSelection(HttpServletRequest request) {
         ModelAndView mvc = new ModelAndView("/interview-selection");
         mvc.addObject("positions", positionRepo.findAll());
+        //Get Name
+        User user = userRepo.findByEmail(request.getUserPrincipal().getName());
+        if(user==null){
+            return new ModelAndView("Error");
+        }
+        mvc.addObject("user", user.getFullName());
         try {
             mvc.addObject("questions", iqRepo.findAll());
         } catch (Exception e) {
@@ -89,6 +101,20 @@ public class InterviewController {
         result.setOverallContextTitle("Detailed");
         result.setContextFeedback("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id semper risus in hendrerit gravida rutrum quisque. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Elit duis tristique sollicitudin nibh sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada. Consequat interdum varius sit amet mattis vulputate enim. Eget nullam non nisi est sit. Duis convallis convallis tellus id interdum velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id semper risus in hendrerit gravida rutrum quisque. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Elit duis tristique sollicitudin nibh sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada. Consequat interdum varius sit amet mattis vulputate enim. Eget nullam non nisi est sit. Duis convallis convallis tellus id interdum velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id semper risus in hendrerit gravida rutrum quisque. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Elit duis tristique sollicitudin nibh sit amet. Pellentesque habitant morbi tristique senectus et netus et malesuada. Consequat interdum varius sit amet mattis vulputate enim. Eget nullam non nisi est sit. Duis convallis convallis tellus id interdum velit.");
         mvc.addObject("result", result);
+        return mvc;
+    }
+
+    @GetMapping("history")
+    public ModelAndView getUserHistory(HttpServletRequest request){
+        ModelAndView mvc = new ModelAndView("history");
+        return mvc;
+    }
+
+    @GetMapping("performance")
+    public ModelAndView getUserPerformance(HttpServletRequest request){
+        ModelAndView mvc = new ModelAndView("performance");
+        
+        //TODO add data
         return mvc;
     }
 }

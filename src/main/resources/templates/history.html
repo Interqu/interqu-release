@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Interview History</title>
+    <link th:href="@{/css/history.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <h1>Interview History</h1>
+    </header>
+
+    <main>
+      <section id="interview-list">
+        <h2>Interview List</h2>
+        <div id="search-container">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search by question or position"
+          />
+          <button id="search-button">Search</button>
+        </div>
+        <div id="sort-container">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select">
+            <option value="date-taken">Date Taken</option>
+            <!-- Add additional sort options if needed -->
+          </select>
+        </div>
+        <table id="interviews">
+          <thead>
+            <tr>
+              <th>Interview ID</th>
+              <th>Date</th>
+              <th>Question</th>
+              <th>Position</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamically generated interview table rows will be inserted here -->
+          </tbody>
+        </table>
+      </section>
+
+      <section id="interview-details">
+        <h2>Interview Details</h2>
+        <div id="interview-info">
+          <!-- Dynamically generated interview details will be inserted here -->
+        </div>
+      </section>
+    </main>
+
+    <script type="text/javascript" th:src="@{/js/history.js}"></script>
+  </body>
+</html>

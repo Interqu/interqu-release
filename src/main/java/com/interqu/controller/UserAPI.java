@@ -99,21 +99,5 @@ public class UserAPI {
 		}
 	}
 
-	// TODO make it only so my role can access this
-	@PostMapping("/dev/addBetaUser")
-	@ResponseBody
-	public String addBetaUser(@RequestBody PendingUser pendingUser){
-		try{
-			if(pendingUser.getEmail()!=null && pendingUser.getFullName()!=null){
-				String randomCode = RandomString.make(64);
-				pendingUser.setRegistrationCode(randomCode);
-				pendingUserRepo.insert(pendingUser);
-				emailSenderService.sendTestUserRegistrationEmail(pendingUser);
-				return "Email has been sent!";
-			}
-		}catch(Exception e){
-			
-		}
-		return "An unexpected error has occred";
-	}
+
 }

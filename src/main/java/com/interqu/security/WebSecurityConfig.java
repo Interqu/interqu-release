@@ -66,15 +66,17 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().httpBasic().and().formLogin()
       .loginPage("/login")
-      .defaultSuccessUrl("/user/interview-selection", true)
+      .defaultSuccessUrl("/user/interview-selection", false)
       .failureUrl("/login?error=true")
       .and()
       .logout()
-      .logoutUrl("/perform_logout")
+      .logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
       .deleteCookies("JSESSIONID").and().authorizeHttpRequests().
 		requestMatchers("/api/**","register/**","/css/**","/js/**", "/dev/**", "/login","/").permitAll()
 		.and().authorizeHttpRequests().
-		requestMatchers("/user/**").hasAuthority("ADMIN");
+		requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
+		.and().authorizeHttpRequests()
+		.requestMatchers("/admin/**").hasAuthority("ADMIN");
 		return http.build();
 	}
 
