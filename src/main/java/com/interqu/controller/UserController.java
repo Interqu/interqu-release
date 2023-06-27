@@ -42,7 +42,7 @@ public class UserController {
 
 	@GetMapping(URL_PATH + "/login")
 	public ModelAndView login() {
-		return new ModelAndView(PAGE_PATH + "/login");
+		return new ModelAndView(PAGE_PATH + "login");
 	}
 
 	@GetMapping("/register" + Constants.USER_VERIFICATION_URL + "{verificationCode}")

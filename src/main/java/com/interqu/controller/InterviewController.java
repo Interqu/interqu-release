@@ -51,7 +51,7 @@ public class InterviewController {
 
     @GetMapping("interview-selection")
     public ModelAndView interviewSelection(HttpServletRequest request) {
-        ModelAndView mvc = new ModelAndView("/interview-selection");
+        ModelAndView mvc = new ModelAndView("interview-selection");
         mvc.addObject("positions", positionRepo.findAll());
         //Get Name
         User user = userRepo.findByEmail(request.getUserPrincipal().getName());
@@ -71,10 +71,10 @@ public class InterviewController {
     // TODO disable all access feature
     @GetMapping("interview/{questionId}")
     public ModelAndView interviewPractice(@PathVariable String questionId) {
-        ModelAndView mvc = new ModelAndView(PAGE_PATH + "/interview-practice");
+        ModelAndView mvc = new ModelAndView(PAGE_PATH + "interview-practice");
         Question question = iqRepo.findByQuestionId(questionId);
         if(question==null){
-            return new ModelAndView(PAGE_PATH + "/interview-selection");
+            return new ModelAndView(PAGE_PATH + "interview-selection");
         }
         mvc.addObject("question", question);
         return mvc;
@@ -82,7 +82,7 @@ public class InterviewController {
 
     @GetMapping("interview/result")
     public ModelAndView interviewResult() {
-        ModelAndView mvc = new ModelAndView(PAGE_PATH + "/interview-result");
+        ModelAndView mvc = new ModelAndView(PAGE_PATH + "interview-result");
         //TODO pull from database
         //TODO add video link
         Result result = new Result();

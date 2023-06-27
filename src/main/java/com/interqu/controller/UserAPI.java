@@ -91,7 +91,7 @@ public class UserAPI {
 			return "Success! Please check email: " + user.getEmail();
 
 		} catch (Exception e) {
-			ModelAndView modelAndView = new ModelAndView( "/login");
+			ModelAndView modelAndView = new ModelAndView( "login");
 			// ErrorReport error = new ErrorReport("SignUp Error", "Register User", e.getMessage());
 			// modelAndView.addObject("Unexpected Error", "An unexpected error has occured.");
 			e.printStackTrace();
