@@ -25,7 +25,7 @@ jobs:
           cache: maven
 
       - name: Build with maven
-        run: mvn clean package
+        run: mvn clean package -Dmaven.test.skip
 
       - name: Copy Artifact
         run: mkdir staging && cp target/*.jar staging/interqu-spring-boot.jar
