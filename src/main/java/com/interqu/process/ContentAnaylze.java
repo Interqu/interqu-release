@@ -20,7 +20,7 @@ public class ContentAnaylze {
     @Value("${analysis.visualUrl}")
     private String visualUrl;
     
-    @Value("${analysis.apiKey}")
+    @Value("${interqu.apiKey}")
     private String apikey;
 
     public ContentAnaylze(){
