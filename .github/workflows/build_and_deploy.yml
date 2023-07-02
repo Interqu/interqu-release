@@ -24,15 +24,6 @@ jobs:
           distribution: "oracle"
           cache: maven
 
-
-      - name: Adding secret
-        run: |
-            echo "$APPLICATION_PROPERTY_VALS" >> src/main/resources/application.properties
-        shell: bash
-        env:
-          APPLICATION_PROPERTY_VALS: ${{secrets.APPLICATION_PROPERTY_VALS}}
-
-          
       - name: Build with maven
         run: mvn clean package
 
