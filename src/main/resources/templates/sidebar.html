@@ -1,0 +1,31 @@
+<div class="sidebar" th:fragment="sidebar">
+  <div class="logo">
+    <a href="/">
+      <img th:src="@{/img/darkbluelogo.svg}" alt="Logo" />
+    </a>
+  </div>
+  <hr class="divider" />
+  <div class="welcome">Welcome, <b> [[${user}]] </b></div>
+  <div class="pages">
+    <div class="page-option">
+      <img th:src="@{/img/dashboard-icon.svg}" alt="Dashboard" />
+      <a href="/user/dashboard">Dashboard</a>
+    </div>
+    <div class="page-option">
+      <img th:src="@{/img/interview-icon.svg}" alt="Interview" />
+      <a href="/user/interview-selection">Practice Interview</a>
+    </div>
+    <div class="page-option">
+      <img th:src="@{/img/performance-icon.svg}" alt="Interview" />
+      <a href="/user/performance">Performance</a>
+    </div>
+    <div class="page-option">
+      <img th:src="@{/img/history-icon.svg}" alt="History" />
+      <a href="/user/history">History</a>
+    </div>
+    <div class="page-option">
+      <img th:src="@{/img/settings-icon.svg}" alt="Settings" />
+      <a href="/user/settings">Settings</a>
+    </div>
+  </div>
+</div>

@@ -3,12 +3,14 @@
   <head>
     <title>Interview History</title>
     <link th:href="@{/css/history.css}" rel="stylesheet" />
+
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
   </head>
   <body>
-    <header>
+    <!-- <header>
       <h1>Interview History</h1>
-    </header>
-
+    </header> -->
+    <div th:include="header :: header"></div>
     <main>
       <section id="interview-list">
         <h2>Interview List</h2>

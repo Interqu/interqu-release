@@ -72,7 +72,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
       .logout()
       .logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
       .deleteCookies("JSESSIONID").and().authorizeHttpRequests().
-		requestMatchers("/api/**","register/**","/css/**","/js/**", "/dev/**", "/login","/").permitAll()
+		requestMatchers("/api/**","register/**","/css/**","/js/**", "/img/**", "/dev/**", "/login","/").permitAll()
 		.and().authorizeHttpRequests().
 		requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
 		.and().authorizeHttpRequests()

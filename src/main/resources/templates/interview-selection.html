@@ -4,13 +4,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interview Practice</title>
+    <title>Interqu - Interview Practice</title>
+    <link th:href="@{/img/darkbluelogo.svg}" rel="icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;900&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script th:inline="javascript">
       $(document).ajaxSend(function (event, xhr) {
@@ -20,62 +22,52 @@
         );
       });
     </script>
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link th:href="@{/css/interview-selection.css}" rel="stylesheet" />
+    <link th:href="@{/css/sidebar.css}" rel="stylesheet" />
   </head>
   <body>
+    <div th:replace="~{sidebar :: sidebar}"></div>
     <div id="container">
-      <div th:include="header :: header"></div>
       <div id="title-container">
-        <h1>Interqu Practice Interview Selection</h1>
+        <h1>Interview Practice Selection</h1>
+      <button><span>Request More Questions</span></button>
       </div>
-      <div class="selection-container">
-        <div id="position-selection-container" class="select-container">
-          <h2>Interview Position</h2>
-          <select id="position" onchange="positionChange()">
-            <option
-              th:each="position : ${positions}"
-              th:text="${position}"
-              th:value="${position}"
-            ></option>
-          </select>
-        </div>
-        <div id="question" class="select-container">
-          <h2>Interview Question</h2>
-          <select id="questions" onchange="questionChange()"></select>
-        </div>
-      </div>
-      <div class="review-container">
-        <div class="box fade" id="1box">
-          <h2><b>Position:&nbsp;</b><span id="position_review"></span></h2>
-        </div>
-        <div class="box fade" id="2box">
-          <h2><b>Question:&nbsp;</b><span id="question_review"></span></h2>
-        </div>
-        <div class="small-tips box fade" id="3box">
-          <div id="mention">
-            <h2 class="green-text center"><b>Try to mention</b></h2>
-            <ul id="objective-ul"></ul>
-          </div>
-          <div id="avoid">
-            <h2 class="red-text center"><b>Try to avoid</b></h2>
-            <ul id="avoid-ul"></ul>
+      <hr />
+      <div id="content">
+        <div class="selection-container">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search by position or question"
+              id="search"
+            />
           </div>
         </div>
-        <div id="4box" class="box fade">
-          <h2><b>How to answer:</b></h2>
-          <span id="tipInfo"> </span>
-        </div>
-      </div>
-      <div id="submit" class="fade">
-        <button id="submitBtn" onclick="submit()">Practice!</button>
+        <hr style="border-top: 2px solid #3145db" />
+        <div class="review-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Question</th>
+                <th>Popularity</th>
+                <th>Difficulty</th>
+              </tr>
+            </thead>
+            <tbody id="selectionTable">
+            </tbody>
+          </table>
       </div>
     </div>
   </body>
   <script th:inline="javascript">
     var questions = /*[[${questions}]]*/ null;
+    const tableTitles = ["Position","Question","Popularity","Difficulty"];
     var posDoc = document.getElementById("questions");
     var displayQuestions = [];
+    var searchField = document.getElementById("search")
+    searchField.addEventListener("input", search);
     function getCurrentQuestionInfo() {
       var question_select = document.getElementById("questions");
       for (var i = 0; i < displayQuestions.length; i++) {
@@ -86,100 +78,181 @@
       }
       return null;
     }
-    positionChange();
-    function positionChange() {
-      posDoc.innerHTML = "";
-      displayQuestions = [];
-      var position_review = document.getElementById("position_review");
-      position_review.innerHTML = document.getElementById("position").value;
-      questions.forEach(function (question) {
-        if (question.position == document.getElementById("position").value) {
-          var option = document.createElement("option");
-          displayQuestions.push(question);
-          option.value = question.question;
-          option.innerHTML = question.question;
-          posDoc.append(option);
-        }
-      });
-      questionChange();
-    }
-    questionChange();
-    function questionChange() {
-      var elements = document.getElementsByClassName("fade");
-      for (let i = 0; i < elements.length; i++) {
-        elements[i].classList.add("fade-element");
-        elements[i].classList.remove("fade-in");
-        elements[i].classList.add("fade-out");
-      }
-      var question_select = document.getElementById("questions");
-      var question_title = document.getElementById("question_review");
-      question_title.innerHTML = question_select.value;
-      var info = getCurrentQuestionInfo();
-      if (info != null) {
-        var objective = document.getElementById("objective-ul");
-        objective.innerHTML = "";
-        for (var i = 0; i < info.positiveIndicators.length; i++) {
-          var liObj = document.createElement("li");
-          liObj.innerHTML = info.positiveIndicators[i];
-          objective.append(liObj);
-        }
-        var avoid = document.getElementById("avoid-ul");
-        avoid.innerHTML = "";
-        for (var i = 0; i < info.negativeIndicators.length; i++) {
-          var liObj = document.createElement("li");
-          liObj.innerHTML = info.negativeIndicators[i];
-          avoid.append(liObj);
-        }
-      }
-      displayTips();
-      animation();
+    function clearTable(){
+      var table = document.getElementById("selectionTable");
+      table.innerHTML ="";
     }
 
-    function animation() {
-      var elements = document.getElementsByClassName("fade");
+    updateTable(questions);
+    function updateTable(questions){
+      clearTable();
+      var table = document.getElementById("selectionTable");
+      if(questions == null){
+        var dne = document.createElement("h1");
+        dne.append("No results found.")
+        return;
+      }
+      for(var i = 0; i < questions.length; i++){
+        var tr = document.createElement("tr");
+        tr.setAttribute('onclick','toggleRow(this)');
+        tr.classList.add("expandable");
+        tr.id = questions[i].questionId;
+        for(var j = 0; j < 4; j++){
+          var td = document.createElement("td");
+          if(j==0){
+            td.innerHTML = questions[i].position
+          }else if(j==1){
+            td.innerHTML = questions[i].question
+          }else if(j==2){
+            td.innerHTML = 100;
+          }else if(j==3){
+            td.innerHTML = "Easy";
+            td.style.color = "green";
+          }
+          tr.append(td);
+        }
+        table.append(tr);
+        var expandableTr = document.createElement("tr");
+        expandableTr.classList.add("details")
+        var expandableTd = document.createElement("td");
+        expandableTd.setAttribute("colspan","4");
+        //Get questionId
+        var questionDetails = generateQuestionDetailsHTML(tr.id);
+        var indicators = genereateQuestionIndictorsHTML(questionDetails);
+        expandableTd.innerHTML = `<div class="line">          
+            <div class="box fade" id="1box">       
+                     <h2><b>Position:&nbsp;</b><span id="position_review">${questionDetails['position']}</span></h2>            </div>           
+                      <div class="box fade" id="2box">              
+                        <h2><b>Question:&nbsp;</b><span id="question_review">${questionDetails['question']}</span></h2>            
+                        </div>          </div>          
+                        <div class="small-tips box fade" id="3box">           
+                           <div id="mention">              
+                            <h2 class="green-text center"><b>Try to mention</b></h2>      
+                                    <ul id="objective-ul">${indicators['positiveIndicators']}</ul>            </div>   
+                                             <div id="avoid">           
+                                                 <h2 class="red-text center"><b>Try to avoid</b></h2>   
+                                                            <ul id="avoid-ul">${indicators['negativeIndicators']}</ul>            </div>     
+                                                                 </div>          <div id="4box" class="box fade"> 
+                                                                             <h2><b>How to answer:</b></h2>   
+                                                                                      <span class="tipInfo"> </span>          </div>        </div>        <div id="submit" class="fade">          <a href="/user/interview/${questionDetails.questionId}"><button id="submitBtn">Practice!</button></a>        </div>`;
+        expandableTr.append(expandableTd);
+        table.append(expandableTr);
+      }
+    }
+
+    function genereateQuestionIndictorsHTML(question){
+      //positive Indicators
+      indicators = {'positiveIndicators':"", 'negativeIndicators':""};
+      for(var i = 0; i < question['positiveIndicators'].length; i++){
+        indicators['positiveIndicators'] += "<li>" + question['positiveIndicators'][i] + "</li>";
+      }
+      //negative indicators
+            //positive Indicators
+      for(var i = 0; i < question['negativeIndicators'].length; i++){
+        indicators['negativeIndicators'] += "<li>" + question['negativeIndicators'][i] + "</li>";
+      }
+      return indicators;
+    }
+
+    //Generate question details without tips
+    function generateQuestionDetailsHTML(questionId){
+      //loop through all questions until quesiton if found;
+      var data = {};
+      for(var i = 0; i < questions.length; i++){
+          if(questions[i].questionId == questionId){
+            data = questions[i];
+            return data;
+          } 
+      }
+      return null;
+    }
+
+    function getQuestionId(question, position){
+      for(var i = 0; i < questions.length; i++){
+          if(questions[i].question==question && questions[i].position==position){
+            return questions[i].questionId;
+          }
+      }
+      return null;
+    }
+
+    function toggleRow(element){
+      if(element.nextElementSibling.classList.contains('details')){
+        displayTips(element);
+      }
+      element.nextElementSibling.classList.toggle('details');
+    }
+    async function displayTips(element){
+      var tips =  await retriveTips(element.id);
+      element.nextElementSibling.getElementsByClassName('tipInfo')[0].innerHTML = "";
+      if(tips!=null){
+        tips.forEach(function (res) {
+              var tip = document.createElement("li");
+              tip.classList.add("spacer");
+              tip.innerHTML = res;
+              element.nextElementSibling.getElementsByClassName('tipInfo')[0].append(tip);
+        });
+      }else{
+        element.getElementById("tipInfo").innerHTML = "Data could not be retrived."
+      }
+      animation(element.nextElementSibling);
+    }
+
+    function search(event){
+      var queriedQuestions = [];
+      var searchTerms = event.target.value.split(" ");
+      
+      for(var i = 0; i < questions.length; i++){
+        var score = 0;
+        for(var j = 0; j < searchTerms.length; j++){
+          console.log(searchTerms)
+          if(questions[i].question.toLowerCase().includes(searchTerms[j].toLowerCase()) || questions[i].position.toLowerCase().includes(searchTerms[j].toLowerCase())){
+            score++;
+          }
+        }
+        if(score>0){
+          questions[i]['score'] = score;
+          queriedQuestions.push(questions[i]);
+        }
+      }
+      queriedQuestions.sort((a, b) => (a.score < b.score) ? 1 : -1)
+      console.log(queriedQuestions)
+      updateTable(queriedQuestions);
+    }
+
+    function animation(fadeArea) {
+      var elements = fadeArea.getElementsByClassName("fade");
       var delay = 50;
-
       for (let i = 0; i < elements.length; i++) {
         (function (index) {
           setTimeout(function () {
             elements[index].classList.remove("fade-out");
             elements[index].classList.add("fade-in");
           }, delay);
-          delay += 75; // Adjust the delay time here (in milliseconds)
+          delay += 75;
         })(i);
       }
     }
 
-    function displayTips() {
-      $.ajax({
+    function retriveTips(questionId) {
+       return new Promise(function(resolve, reject){$.ajax({
         url: "/api/getInterviewTip",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
-          questionId: getCurrentQuestionInfo().questionId,
+          questionId: questionId,
         }),
         success: function (result) {
-          document.getElementById("tipInfo").innerHTML = "";
           if (result.length == 0) {
-            document.getElementById("tipInfo").innerHTML =
-              "Data could not be found";
+            reject(result)
           }
-          result.forEach(function (res) {
-            var tip = document.createElement("li");
-            tip.classList.add("spacer");
-            tip.innerHTML = res;
-            document.getElementById("tipInfo").append(tip);
-          });
+          resolve(result)
         },
         error: function (result) {
-          document.getElementById("tipInfo").innerHTML =
-            "Could not retrive Data.";
+          reject(result)
         },
       });
-    }
-    function submit() {
-      window.location.href =
-        "/user/interview/" + getCurrentQuestionInfo().questionId;
-    }
+    })
+  }
   </script>
 </html>
