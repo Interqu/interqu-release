@@ -99,4 +99,23 @@ public class UserAPI {
 		}
 	}
 
+	@PostMapping("/updateUser")
+	@ResponseBody
+	public String updateUser(User user, HttpServletRequest request) {
+		try {
+			User userInfo = userRepo.findByEmail(request.getUserPrincipal().getName());
+			User checkUser = userRepo.findByEmail(user.getEmail());
+
+			System.out.println(userInfo.getFirstName());
+			return "Working";
+			
+		} catch (Exception e) {
+			ModelAndView modelAndView = new ModelAndView( "login");
+			// ErrorReport error = new ErrorReport("SignUp Error", "Register User", e.getMessage());
+			// modelAndView.addObject("Unexpected Error", "An unexpected error has occured.");
+			e.printStackTrace();
+			return "Unexpected error has occurred";
+		}
+	}
+
 }

@@ -63,6 +63,8 @@
             placeholder="e.g. me@example.com"
             type="email"
             name="username"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
             required
           />
           <span class="field__label-wrap" aria-hidden="true">
@@ -77,6 +79,8 @@
             type="password"
             placeholder="**********"
             name="password"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
             required
           />
           <span class="field__label-wrap" aria-hidden="true">

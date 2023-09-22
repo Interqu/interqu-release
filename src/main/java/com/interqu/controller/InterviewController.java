@@ -117,4 +117,22 @@ public class InterviewController {
         //TODO add data
         return mvc;
     }
+    @GetMapping("settings")
+    public ModelAndView getUserSettings(HttpServletRequest request){
+        ModelAndView mvc = new ModelAndView("account-settings");
+        User user = userRepo.findByEmail(request.getUserPrincipal().getName());
+        if(user==null){
+            return new ModelAndView("Error");
+        }
+        mvc.addObject("firstname", user.getFirstName());
+        mvc.addObject("lastname", user.getLastName());
+        mvc.addObject("username", user.getFullName());
+        mvc.addObject("email", user.getEmail());
+
+
+
+        System.out.println(user);
+        //TODO add data
+        return mvc;
+    }
 }

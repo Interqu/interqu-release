@@ -37,3 +37,5 @@ build/
 
 # secrets
 .env
+/.metadata/
+/node_modules
