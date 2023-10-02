@@ -3,112 +3,214 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test Results</title>
+    <title>Interview Results</title>
+    <link th:href="@{/img/darkbluelogo.svg}" rel="icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;900&display=swap"
+      rel="stylesheet"
+    />
+
     <link th:href="@{/css/interview-result.css}" rel="stylesheet" />
+    <link th:href="@{/css/sidebar.css}" rel="stylesheet" />
   </head>
 
   <body>
-    <div class="container">
-      <h1>Interview Results</h1>
-      <div class="score">
-        <center>
-          <video controls>
-            <source
-              src="https://www.w3schools.com/html/mov_bbb.mp4"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
-        </center>
-        <div class="score-bar" id="overall-score">
-          <h2 id="overall-progress">Overall Score</h2>
-          <h3>Position: [[${result.position}]]</h3>
-          <h3>Prompt: [[${result.prompt}]]</h3>
-          <h3>Time: 1m 12s</h3>
+    <div th:replace="~{sidebar :: sidebar}"></div>
+    <div id="content-container">
+      <div id="options">
+        <div>
+          <a id="download" class="option" href="/user/downloadReport"
+            ><img src="/img/download.svg" />Download report</a
+          >
+        </div>
+        <div>
+          <a id="share" class="option" href="/user/shareReport"
+            ><img src="/img/share.svg" />Share report</a
+          >
+          <a id="delete" class="option" href="/user/shareReport"
+            ><img src="/img/delete.svg" />Delete</a
+          >
         </div>
       </div>
-
-      <div class="score">
-        <div class="score-bar" id="video-score">
-          <h2>Video - Angry</h2>
-          <div class="score-progress" id="video-progress"></div>
-          <div class="score-description">
-            <p id="video-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
-              semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum velit.
-            </p>
+      <div id="report-container">
+        <div id="overview" class="section">
+          <h3 class="key">Report Id: <span>1102jdjal2ldp23bsc</span></h3>
+          <h3 class="key">Name: <span>Derek Li</span></h3>
+          <h3 class="key">Email: <span>rejie.li@gmail.com</span></h3>
+          <h3 class="key">Position: <span>Software Engineer</span></h3>
+          <h3 class="key">
+            Question:<span>Tell me about a time you failed.</span>
+          </h3>
+          <h3 class="key">Date: <span>07/12/23</span></h3>
+        </div>
+        <hr />
+        <div id="overview analysis" class="section">
+          <h2>Report Overview</h2>
+          <h3 class="">Overall: Good | Score: 62%</h3>
+          <div class="bar-container">
+            <div class="bar" id="overallBar" style="--progress: 62%"></div>
           </div>
+        </div>
+        <hr />
+        <div id="overview analysis" class="section">
+          <h2>Video</h2>
+          <h3 class="">Overall emotion: Neutral | Score: 67%</h3>
+          <div class="bar-container">
+            <div class="bar" id="videoBar" style="--progress: 67%"></div>
+          </div>
+          <h4>Intelligent Analysis:</h4>
+          <div class="score">
+            <div class="score-bar" id="video-score">
+              <div class="score-progress" id="video-progress"></div>
+              <div class="score-description">
+                <p id="video-description">
+                  In this interview, you've shown a neutral facial expression
+                  for the majority of the time. While there were some moments of
+                  fear and surprise, it's important to remember that it's okay
+                  to show emotions during an interview. In fact, it can help
+                  convey your personality and provide a more human touch to the
+                  conversation. However, it's important to ensure that your
+                  emotions don't distract from the content of your answer.
+                  <br /><br />
+                  When answering the question about a time you failed, consider
+                  being transparent and authentic with your emotions. It's okay
+                  to show vulnerability, as it can demonstrate your honesty and
+                  self-awareness. It's important to remember to maintain a
+                  professional demeanor and ensure that your emotions don't
+                  overwhelm the conversation.
+                  <br /><br />
+                  One tip to keep yourself calm and grounded during the
+                  interview is to focus on your breathing. Take slow, deep
+                  breaths to help regulate your emotions and provide a sense of
+                  calmness. Additionally, practice your answer to the question
+                  beforehand so that you can feel more confident and prepared
+                  when answering the question. Remember, it's okay to have
+                  failed in the past as long as you can show that you learned
+                  from the experience and grew as a result.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div id="overview analysis" class="section">
+          <h2>Audio</h2>
+          <h3>Overall emotion: Angry | Score: 19%</h3>
+          <div class="bar-container">
+            <div class="bar" id="audioBar" style="--progress: 19%"></div>
+          </div>
+          <h4>Intelligent Analysis:</h4>
+          <div class="score">
+            <div class="score-bar" id="video-score">
+              <div class="score-progress" id="video-progress"></div>
+              <div class="score-description">
+                <p id="video-description">
+                  In this interview, you've displayed an angry voice expression
+                  for the majority of the time. Your tone was sharp and intense,
+                  with a hint of frustration evident in your delivery. The audio
+                  conveyed a sense of aggression and impatience, which could
+                  potentially create a hostile atmosphere and hinder effective
+                  communication. To improve the audio, it is essential to work
+                  on managing your emotions and maintaining a more composed and
+                  neutral tone throughout the interview. This can be achieved by
+                  practicing deep breathing techniques and consciously
+                  monitoring your voice modulation.
+                  <br /><br />
+                  Additionally, it is crucial to focus on active listening and
+                  allowing the other person to speak without interruption. By
+                  actively engaging in a two-way conversation and practicing
+                  empathy, you can create a more respectful and productive
+                  environment. It's important to remember that effective
+                  communication involves not only expressing your thoughts and
+                  concerns but also actively listening to others' perspectives
+                  and responding in a respectful manner. Taking the time to
+                  pause, reflect, and respond thoughtfully can help diffuse
+                  anger and promote a more constructive dialogue.
+                  <br /><br />
+                  Furthermore, incorporating positive language and choosing your
+                  words carefully can make a significant difference in the tone
+                  of the interview. Using more neutral and objective language
+                  instead of personal attacks or accusatory statements can help
+                  create a more professional and respectful atmosphere.
+                  Additionally, focusing on the main points and maintaining a
+                  clear and concise communication style can prevent
+                  misunderstandings and unnecessary conflict. Practice active
+                  communication techniques, such as paraphrasing and clarifying
+                  information, to ensure effective comprehension and minimize
+                  any potential anger-inducing miscommunication.
+                  <br /><br />
+                  By implementing these strategies and maintaining a composed
+                  and respectful demeanor, you can improve the audio of the
+                  interview and promote a more constructive and harmonious
+                  conversation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div id="overview analysis" class="section">
+          <h2>Content</h2>
+          <h3>Overall: Detailed | Score: 86%</h3>
+          <div class="bar-container">
+            <div class="bar" id="contentBar" style="--progress: 86%"></div>
+          </div>
+          <h4>Intelligent Analysis:</h4>
+
+          <p id="video-description">
+            In this interview, the content was excellent and very detailed. You
+            demonstrated an impressive depth of knowledge and provided
+            comprehensive responses to the questions asked. Your ability to
+            articulate complex concepts clearly and concisely was commendable,
+            making it easy for the audience to follow along. The content was
+            well-structured, with a logical flow that allowed for a thorough
+            exploration of the topic at hand. Your expertise and attention to
+            detail were evident throughout, which greatly enhanced the overall
+            quality of the interview.
+            <br /><br />
+            To further improve the interview's content, one suggestion would be
+            to incorporate more real-world examples or case studies. While your
+            explanations were thorough, the addition of specific instances or
+            practical applications can help illustrate your points and make them
+            more relatable to the audience. By providing tangible examples, you
+            can enhance the understanding and engagement of listeners, as well
+            as demonstrate the practicality and relevance of your expertise.
+            <br /><br />
+            Another area of improvement could be to incorporate a more
+            interactive approach. Although the content was detailed, there were
+            limited opportunities for engagement with the interviewer or the
+            audience. Consider integrating questions or prompts that encourage
+            active participation, such as asking for opinions or experiences
+            related to the topic. This will not only create a more dynamic and
+            engaging conversation but also foster a sense of collaboration and
+            inclusivity.
+            <br /><br />
+            Furthermore, it is essential to strike a balance between technical
+            depth and accessibility. While it is admirable to provide detailed
+            information, ensure that it is presented in a manner that can be
+            easily understood by a broader audience. Avoid excessive jargon or
+            technical terms without providing sufficient context or
+            explanations. Strive to maintain clarity and simplicity in your
+            explanations, allowing listeners with varying levels of familiarity
+            with the subject matter to grasp the key points effectively.
+            <br /><br />
+            By incorporating these suggestions, such as utilizing real-world
+            examples, promoting interactivity, and maintaining accessibility,
+            you can further enhance the already excellent content of the
+            interview. These improvements will not only engage and educate the
+            audience but also solidify your position as an expert in the field.
+          </p>
         </div>
       </div>
-
-      <div class="score">
-        <div class="score-bar" id="audio-score">
-          <h2>Audio - Confident</h2>
-          <div class="score-progress" id="audio-progress"></div>
-          <div class="score-description">
-            <p id="audio-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
-              semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum
-              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
-              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum velit.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="score">
-        <div class="score-bar" id="content-score">
-          <h2>Content - Detailed</h2>
-          <div class="score-progress" id="content-progress"></div>
-          <div class="score-description">
-            <p id="content-description">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
-              semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum
-              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
-              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum
-              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
-              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
-              diam volutpat commodo sed egestas egestas fringilla phasellus.
-              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
-              habitant morbi tristique senectus et netus et malesuada. Consequat
-              interdum varius sit amet mattis vulputate enim. Eget nullam non
-              nisi est sit. Duis convallis convallis tellus id interdum velit.
-            </p>
-          </div>
-        </div>
+      <div>
+        <video src="https://www.w3schools.com/html/movie.mp4"></video>
       </div>
     </div>
+    2
 
     <script type="text/javascript" th:src="@{/js/interview-result.js}"></script>
   </body>

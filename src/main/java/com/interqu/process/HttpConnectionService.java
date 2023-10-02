@@ -2,10 +2,12 @@ package com.interqu.process;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -18,15 +20,15 @@ import com.mongodb.internal.connection.Connection;
 @Service
 public class HttpConnectionService {
      
-    public JSONObject executeGET(String url, HashMap<String, String> params, HashMap<String, String> headers) throws Exception{
-        return executeRequest(url, HttpMethod.GET, params,headers);
+    public JSONObject executeGET(String url, Map<String, String> params, Map<String, String> headers) throws Exception{
+        return executeRequest(url, HttpMethod.GET, params,headers,null);
     }
 
-    public JSONObject executePOST(String url, HashMap<String, String> params, HashMap<String, String> headers) throws Exception{
-        return executeRequest(url, HttpMethod.POST, params,headers);
+    public JSONObject executePOST(String url, Map<String, String> params, Map<String, String> headers, Map<String, Object> requestBody) throws Exception{
+        return executeRequest(url, HttpMethod.POST, params,headers,requestBody);
     }
 
-    public JSONObject executeRequest(String url, HttpMethod method, HashMap<String,String> params, HashMap<String, String> headers) throws Exception{
+    public JSONObject executeRequest(String url, HttpMethod method, Map<String,String> params, Map<String, String> headers, Map<String, Object> requestBody) throws Exception{
             //Set Params
             for(String key : params.keySet()){
                 url += "?" + URLEncoder.encode(key, StandardCharsets.UTF_8.toString()) + "=" + URLEncoder.encode(params.get(key), StandardCharsets.UTF_8.toString()) ;
@@ -39,10 +41,26 @@ public class HttpConnectionService {
             for(String key : headers.keySet()){
                 connection.setRequestProperty(key, headers.get(key));
             }
-
-            // Send request
+            // Handle GET request
+            if (method.equals(HttpMethod.GET)) {
+                // Enable input
+                connection.setDoInput(true);
+            }
+            // Handle POST request
+            else if (method.equals(HttpMethod.POST)) {
+                // Enable output and set request body if provided
+                connection.setDoOutput(true);
+                if (requestBody != null) {
+                    connection.setRequestProperty("Content-Type", "application/json");
+                    String jsonBody = new JSONObject(requestBody).toString(); // Convert the request body to JSON string
+                    OutputStream outputStream = connection.getOutputStream();
+                    outputStream.write(jsonBody.getBytes());
+                    outputStream.flush();
+                }
+            }
             connection.setRequestMethod(method.name());
 
+            // Send request
             int responseCode = connection.getResponseCode();
 
             if(responseCode != 200){

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interqu - Completed Interviews</title>
+    <link th:href="@{/img/darkbluelogo.svg}" rel="icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script th:inline="javascript">
+      $(document).ajaxSend(function (event, xhr) {
+        xhr.setRequestHeader(
+          /*[[${_csrf.headerName}]]*/ "",
+          /*[[${_csrf.token}]]*/ ""
+        );
+      });
+    </script>
+    <link th:href="@{/css/interview-selection.css}" rel="stylesheet" />
+    <link th:href="@{/css/sidebar.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <div th:replace="~{sidebar :: sidebar}"></div>
+    <div id="container">
+      <div id="title-container">
+        <h1>Completed Interviews</h1>
+      </div>
+      <hr />
+      <div id="content">
+        <div class="selection-container">
+          <div class="search-container">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search by position or question"
+              id="search"
+            />
+          </div>
+        </div>
+        <hr style="border-top: 2px solid #3145db" />
+        <div class="review-container">
+          <table class="modern-table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Question</th>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="selectionTable">
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </body>
+   
+  <script th:inline="javascript">
+    var questions = /*[[${interviews}]]*/ null;
+    var questionDetails = [];
+
+    init();
+    async function init(){
+      questionDetails = await getQuestionsInfo(questions);
+      updateTable(questions);
+    }
+
+    async function getQuestionsInfo(questions){
+      var questionIds = [];
+      for(var i = 0; i < questions.length; i++){
+        questionIds.push(questions[i]["questionId"]);
+      }
+      //Send ajax request
+      return retriveQuestionDetails(questionIds)
+    }
+
+    function getQuestionDetails(questionId){
+      var foundItem = null;
+      questionDetails.forEach((details)=>{
+        console.log(details['questionId']==questionId)
+        if(details['questionId']==questionId){
+          foundItem = details;
+        }
+      })
+      return foundItem;
+    }
+
+    const tableTitles = ["Position","Question","timeTaken","score","processingStatus"];
+    var posDoc = document.getElementById("questions");
+    var displayQuestions = [];
+    var searchField = document.getElementById("search")
+    searchField.addEventListener("input", search);
+    function getCurrentQuestionInfo() {
+      var question_select = document.getElementById("questions");
+      for (var i = 0; i < displayQuestions.length; i++) {
+        if (displayQuestions[i].question == question_select.value) {
+          console.log(displayQuestions[i]);
+          return displayQuestions[i];
+        }
+      }
+      return null;
+    }
+    
+    function clearTable(){
+      var table = document.getElementById("selectionTable");
+      table.innerHTML ="";
+    }
+
+    function updateTable(questions){
+      clearTable();
+      var table = document.getElementById("selectionTable");
+      if(questions == null){
+        var dne = document.createElement("h1");
+        dne.append("No results found.")
+        return;
+      }
+      for(var i = 0; i < questions.length; i++){
+        var tr = document.createElement("tr");
+        tr.setAttribute('onclick','toggleRow(this)');
+        tr.classList.add("expandable");
+        var questionId = questions[i].questionId;
+        tr.id = questionId;
+        var details = getQuestionDetails(questionId)
+        for(var j = 0; j < 5; j++){
+          var td = document.createElement("td");
+          if(j==0){
+            td.innerHTML = details.position
+          }else if(j==1){
+            td.innerHTML = details.question
+          }else if(j==2){
+            td.innerHTML = questions[i].timeTaken;
+          }else if(j==3){
+            td.innerHTML = questions[i].score;
+            td.style.color = "green";
+          }else if(j==4){
+            td.innerHTML = questions[i].processingStatus;
+          }
+          tr.append(td);
+        }
+        table.append(tr);
+      }
+    }
+
+    function search(event){
+      var queriedQuestions = [];
+      var searchTerms = event.target.value.split(" ");
+      
+      for(var i = 0; i < questions.length; i++){
+        var score = 0;
+        for(var j = 0; j < searchTerms.length; j++){
+          console.log(searchTerms)
+          if(questions[i].question.toLowerCase().includes(searchTerms[j].toLowerCase()) || questions[i].position.toLowerCase().includes(searchTerms[j].toLowerCase())){
+            score++;
+          }
+        }
+        if(score>0){
+          questions[i]['score'] = score;
+          queriedQuestions.push(questions[i]);
+        }
+      }
+      queriedQuestions.sort((a, b) => (a.score < b.score) ? 1 : -1)
+      console.log(queriedQuestions)
+      updateTable(queriedQuestions);
+    }
+
+    function animation(fadeArea) {
+      var elements = fadeArea.getElementsByClassName("fade");
+      var delay = 50;
+      for (let i = 0; i < elements.length; i++) {
+        (function (index) {
+          setTimeout(function () {
+            elements[index].classList.remove("fade-out");
+            elements[index].classList.add("fade-in");
+          }, delay);
+          delay += 75;
+        })(i);
+      }
+    }
+
+    function retriveQuestionDetails(questionIds) {
+       return new Promise(function(resolve, reject){$.ajax({
+        url: "/api/questionDetails",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(questionIds),
+        success: function (result) {
+          if (result.length == 0) {
+            reject(result)
+          }
+          resolve(result)
+        },
+        error: function (result) {
+          reject(result)
+        },
+      });
+    })
+  }
+  </script>
+</html>

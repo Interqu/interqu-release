@@ -52,6 +52,18 @@ const startCountdown = () => {
   }, 1000);
 };
 
+function getPresignedURL(questionId) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: "/api/presigned-url?questionId=" + questionId,
+      type: "GET",
+      processData: false,
+      success: resolve,
+      error: reject,
+    });
+  });
+}
+
 async function accessCamera() {
   try {
     video.srcObject = await navigator.mediaDevices.getUserMedia({
@@ -111,30 +123,42 @@ stopBtn.addEventListener("click", () => {
 });
 
 submitBtn.addEventListener("click", () => {
-  try {
-    const blob = new Blob(chunks, { type: "video/mp4" });
+  const questionId = questionData.questionId;
+  getPresignedURL(questionId)
+    .then(function (response) {
+      const blob = new Blob(chunks, { type: "video/mp4" });
+      const formData = new FormData();
+      formData.append("questionId", questionId);
+      formData.append("video", blob, response["fileName"]);
 
-    const formData = new FormData();
-    formData.append("questionId", questionData.questionId);
-    formData.append("video", blob, "video.mp4");
-    $.ajax({
-      url: "/api/processInterview",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (response) {
-        // Handle the server response
-      },
-      error: function (xhr, status, error) {
-        // Handle any errors
-      },
+      blob.metadata = response["metadata"];
+      const headers = {};
+      headers["Content-Type"] = "video/mp4";
+      //insert metadata into headers
+      Object.keys(response["metadata"]).forEach((key) => {
+        headers["x-amz-meta-" + key] = response["metadata"][key];
+        console.log(headers);
+      });
+
+      return new Promise(function (resolve, reject) {
+        $.ajax({
+          url: response["presignedURL"],
+          type: "PUT",
+          processData: false,
+          data: blob,
+          headers: headers,
+          success: resolve,
+          error: reject,
+        });
+      });
+    })
+    .then(function (response) {
+      window.onbeforeunload = null;
+      window.location = "/user/completedInterviews";
+    })
+    .catch(function (error) {
+      alert(error);
     });
-    chunks = [];
-  } catch (error) {
-    alert("An unexpected error has occured");
-    console.error(error);
-  }
 });
 restartBtn.addEventListener("click", () => {
   try {

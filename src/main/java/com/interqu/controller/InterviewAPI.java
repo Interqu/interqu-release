@@ -1,14 +1,18 @@
 package com.interqu.controller;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Principal;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,27 +32,44 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+
+import com.amazonaws.Response;
+import com.interqu.db.InterviewMetadataRepository;
 import com.interqu.db.InterviewQuestionRepository;
 import com.interqu.db.InterviewVideoDataRepository;
 import com.interqu.db.PendingUserRepository;
 import com.interqu.db.PositionRepository;
 import com.interqu.db.QuestionTipsRepository;
 import com.interqu.db.UserRepository;
+import com.interqu.interviews.InterviewMetadata;
 import com.interqu.interviews.InterviewVideoData;
 import com.interqu.interviews.Position;
 import com.interqu.interviews.questions.Question;
 import com.interqu.interviews.questions.QuestionTips;
 import com.interqu.process.FileService;
+import com.interqu.process.S3Service;
+import com.interqu.process.model.AWSPresignedURLModel;
 import com.interqu.survey.BetaTestUserAnswer;
+import com.interqu.user.CustomUserDetails;
 import com.interqu.user.PendingUser;
 import com.interqu.user.User;
 import com.interqu.utils.Utils;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("api")
 public class InterviewAPI {
+
+    @Value("${aws.bucket.name}")
+    private String bucketName;
 
     @Autowired
     private PositionRepository positionRepo;
@@ -69,6 +91,12 @@ public class InterviewAPI {
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private S3Service s3Service;
+
+    @Autowired
+    private InterviewMetadataRepository interviewMetadataRepo;
 
     @PostMapping("/getPositions")
     @ResponseBody
@@ -157,7 +185,8 @@ public class InterviewAPI {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         try{
-           fileService.uploadFile(ivd.getFileName(), file);
+            fileService.uploadFile(ivd.getFileName(), file);
+            //Call an async pub/sub method here.
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }catch(Exception e){
             ivdRepo.delete(ivd);
@@ -165,11 +194,6 @@ public class InterviewAPI {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    //  @PostMapping("processInterview")
-    //  public ModelAndView processInterview(@PathVariable("fileName") String fileName){
-        
-    //  }
 
     //FOR DEV ONLY
     @PostMapping("/insertQuestion")
@@ -195,4 +219,38 @@ public class InterviewAPI {
         }
     }
 
+    @GetMapping("/user/getAllInterviews")
+    public ResponseEntity<?> retriveAllInterviews(@AuthenticationPrincipal CustomUserDetails userDetails){
+        return ResponseEntity.ok().body(interviewMetadataRepo.findByUser(userDetails.getUsername()));   
+    }
+
+    @PostMapping("/questionDetails")
+    public ResponseEntity<?> retriveQuestionDetails(@RequestBody List<String> questionIds){
+        return ResponseEntity.ok().body(questionRepo.findByQuestionIdIn(questionIds));
+    }
+
+    //TODO move to /secured endpoint
+    @GetMapping("/presigned-url")
+    public ResponseEntity<?> generatePresignedURL(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(name = "questionId")String questionId,  HttpServletRequest request, HttpServletResponse response){
+        //Ensure user is not null
+        // if(userDetails==null){
+        //     return ResponseEntity.badRequest().body("user could not be identified.");
+        // }
+        //Find Question in Database
+        Question question = questionRepo.findByQuestionId(questionId);
+        if(question==null){
+            return ResponseEntity.badRequest().body("question could not be retrived.");
+        }
+        //Generate file name TODO store in mongodb
+        String fileName = Utils.setInterviewVideoData(userDetails.getUser(), question).getFileName();
+        //Generate video metadata
+        Map<String, String> metadata = Utils.generateInterviewMetadata(userDetails.getUser(), question);
+        //Generate code
+        String url = s3Service.generatePresignedUrl(userDetails.getUser(), question , metadata, fileName);
+        
+        //Store in mongodb
+        InterviewMetadata im = new InterviewMetadata(userDetails.getUsername(), fileName, new Date(), null, "Uploading", question.getQuestionId());
+        interviewMetadataRepo.save(im);
+        return ResponseEntity.ok().body(new AWSPresignedURLModel(url, metadata, fileName));
+    }
 }

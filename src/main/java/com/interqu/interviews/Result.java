@@ -4,39 +4,43 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.interqu.interviews.emotions.AudioEmotions;
+import com.interqu.interviews.emotions.VisualEmotions;
+
 @Document("interview-results")
 public class Result {
     
     private String fileName;
     private String email;//account
     private String position;
-    private String prompt;
+    private String prompt;//or question
     private String timeTaken;
     private String videoTime;
     private int overallScore;
     
     private String overallVideoEmotionTitle;
     private int videoScore;
-    private List<String> videoEmotion;
+    private List<VisualEmotions> videoEmotion;
     private String videoFeedBack;
 
     private String overallAudioEmotionTitle;
     private int audioScore;
-    private List<String> audioEmotion;
+    private List<AudioEmotions> audioEmotion;
     private String audioFeedback;
 
     private String overallContextTitle;
     private int contextScore;
     private String contextFeedback;
+    private String transcript;
 
     public Result(){
         
     }
 
     public Result(String fileName, String email, String position, String prompt, String timeTaken, String videoTime,
-            int overallScore, String overallVideoEmotionTitle, int videoScore, List<String> videoEmotion,
-            String videoFeedBack, String overallAudioEmotionTitle, int audioScore, List<String> audioEmotion,
-            String audioFeedback, String overallContextTitle, int contextScore, String contextFeedback) {
+            int overallScore, String overallVideoEmotionTitle, int videoScore, List<VisualEmotions> videoEmotion,
+            String videoFeedBack, String overallAudioEmotionTitle, int audioScore, List<AudioEmotions> audioEmotion,
+            String audioFeedback, String overallContextTitle, int contextScore, String contextFeedback, String transcript) {
         this.fileName = fileName;
         this.email = email;
         this.position = position;
@@ -55,6 +59,7 @@ public class Result {
         this.overallContextTitle = overallContextTitle;
         this.contextScore = contextScore;
         this.contextFeedback = contextFeedback;
+        this.transcript = transcript;
     }
 
     public String getFileName() {
@@ -87,6 +92,14 @@ public class Result {
 
     public void setPrompt(String prompt) {
         this.prompt = prompt;
+    }
+
+    public String getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(String transcript) {
+        this.transcript = transcript;
     }
 
     public String getTimeTaken() {
@@ -129,11 +142,11 @@ public class Result {
         this.videoScore = videoScore;
     }
 
-    public List<String> getVideoEmotion() {
+    public List<VisualEmotions> getVideoEmotion() {
         return videoEmotion;
     }
 
-    public void setVideoEmotion(List<String> videoEmotion) {
+    public void setVideoEmotion(List<VisualEmotions> videoEmotion) {
         this.videoEmotion = videoEmotion;
     }
 
@@ -161,11 +174,11 @@ public class Result {
         this.audioScore = audioScore;
     }
 
-    public List<String> getAudioEmotion() {
+    public List<AudioEmotions> getAudioEmotion() {
         return audioEmotion;
     }
 
-    public void setAudioEmotion(List<String> audioEmotion) {
+    public void setAudioEmotion(List<AudioEmotions> audioEmotion) {
         this.audioEmotion = audioEmotion;
     }
 

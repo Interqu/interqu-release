@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.interqu.db.InterviewMetadataRepository;
 import com.interqu.db.PendingUserRepository;
 import com.interqu.db.RoleRepository;
 import com.interqu.db.UserRepository;
+import com.interqu.interviews.InterviewMetadata;
 import com.interqu.roles.Role;
 import com.interqu.survey.BetaTestUserAnswer;
 import com.interqu.user.PendingUser;
@@ -39,6 +43,9 @@ public class UserController {
 
 	@Autowired
 	private RoleRepository roleRepo;
+
+	@Autowired
+	private InterviewMetadataRepository interviewMetadataRepository;
 
 	@GetMapping(URL_PATH + "/login")
 	public ModelAndView login() {
@@ -128,19 +135,13 @@ public class UserController {
 		return new ModelAndView("account-settings");
 	}
 
-
-
-	// @GetMapping("dev/createRole/{roleName}")
-	// @ResponseBody
-	// public String createRole(@PathVariable String roleName){
-	// 	Role role = new Role(roleName);
-	// 	roleRepo.save(role);
-	// 	return "Successful";
-	// }
-
-	// @GetMapping("settings")
-	// public ModelAndView getUserSettings(HttpServletRequest request){
-
-	// }
+	@GetMapping("/user/completedInterviews")
+	public ModelAndView completedInterviews(@AuthenticationPrincipal UserDetails userDetails){
+		//Retrive all completed Interview by user
+		List<InterviewMetadata> interviews = interviewMetadataRepository.findByUser(userDetails.getUsername());
+		ModelAndView page = new ModelAndView("completed-interviews");
+		page.addObject("interviews", interviews);
+		return page;
+	}
 
 }

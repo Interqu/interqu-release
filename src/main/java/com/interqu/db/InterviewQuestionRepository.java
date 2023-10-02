@@ -10,10 +10,11 @@ import com.interqu.interviews.questions.Question;
 @Service
 public interface InterviewQuestionRepository extends MongoRepository<Question, String> {
 
-    // public InterviewQuestions findByRole(String role);
     public List<Question> findByPosition(String position);
 
     public Question findByPositionAndQuestion(String position, String question);
 
     public Question findByQuestionId(String questionId);
+
+    public List<Question> findByQuestionIdIn(List<String> questionId);
 }
