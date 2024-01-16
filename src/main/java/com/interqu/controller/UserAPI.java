@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,7 @@ import net.bytebuddy.utility.RandomString;
 
 @Controller
 @RequestMapping("/api/user/")
-public class UserAPI {
+public class UserAPI extends API{
     
 	@Autowired
 	private UserRepository userRepo;
@@ -42,9 +43,7 @@ public class UserAPI {
 	@Autowired
 	private RoleRepository roleRepo;
 
-	@Autowired
-	private PendingUserRepository pendingUserRepo;
-
+	//TODO authenticate
 	@PostMapping("authenticate")
 	public ModelAndView authneticateUser(User user, HttpServletRequest request) {
 		UserDetails UD = customUserDetailsService.loadUserByUsername(user.getEmail());
@@ -59,6 +58,8 @@ public class UserAPI {
 		inccorectInfo.addObject("Error", "Invalid Login Credentials");
 		return inccorectInfo;
 	}
+
+	//TODO register
 	@PostMapping("/register")
 	@ResponseBody
 	public String registerUser(@RequestBody User user, HttpServletRequest request) {
