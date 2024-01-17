@@ -28,7 +28,7 @@ import net.bytebuddy.utility.RandomString;
 
 @Controller
 @RequestMapping("/api/user/")
-public class UserAPI {
+public class UserAPI extends API{
     
 	@Autowired
 	private UserRepository userRepo;
