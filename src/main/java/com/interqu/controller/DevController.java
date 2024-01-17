@@ -15,7 +15,7 @@ import io.netty.handler.codec.http.HttpMethod;
 
 @Controller
 @RequestMapping("dev")
-public class DevController {
+public class DevController extends API{
     
     @Autowired
     ContentAnaylze contentAnalyzer;

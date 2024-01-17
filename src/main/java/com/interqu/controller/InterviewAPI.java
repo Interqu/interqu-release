@@ -47,7 +47,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("api")
-public class InterviewAPI {
+public class InterviewAPI extends API{
 
     @Autowired
     private PositionRepository positionRepo;
