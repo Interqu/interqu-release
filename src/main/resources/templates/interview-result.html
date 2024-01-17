@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Results</title>
+    <link th:href="@{/css/interview-result.css}" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Interview Results</h1>
+      <div class="score">
+        <center>
+          <video controls>
+            <source
+              src="https://www.w3schools.com/html/mov_bbb.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </center>
+        <div class="score-bar" id="overall-score">
+          <h2 id="overall-progress">Overall Score</h2>
+          <h3>Position: [[${result.position}]]</h3>
+          <h3>Prompt: [[${result.prompt}]]</h3>
+          <h3>Time: 1m 12s</h3>
+        </div>
+      </div>
+
+      <div class="score">
+        <div class="score-bar" id="video-score">
+          <h2>Video - Angry</h2>
+          <div class="score-progress" id="video-progress"></div>
+          <div class="score-description">
+            <p id="video-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
+              semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum velit.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="score">
+        <div class="score-bar" id="audio-score">
+          <h2>Audio - Confident</h2>
+          <div class="score-progress" id="audio-progress"></div>
+          <div class="score-description">
+            <p id="audio-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
+              semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum
+              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
+              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum velit.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="score">
+        <div class="score-bar" id="content-score">
+          <h2>Content - Detailed</h2>
+          <div class="score-progress" id="content-progress"></div>
+          <div class="score-description">
+            <p id="content-description">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed id
+              semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum
+              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
+              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum
+              velit.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed
+              id semper risus in hendrerit gravida rutrum quisque. Pellentesque
+              diam volutpat commodo sed egestas egestas fringilla phasellus.
+              Elit duis tristique sollicitudin nibh sit amet. Pellentesque
+              habitant morbi tristique senectus et netus et malesuada. Consequat
+              interdum varius sit amet mattis vulputate enim. Eget nullam non
+              nisi est sit. Duis convallis convallis tellus id interdum velit.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/interview-result.js}"></script>
+  </body>
+</html>

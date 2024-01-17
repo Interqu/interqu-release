@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Interqu Interview Practice</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script th:inline="javascript">
+      $(document).ajaxSend(function (event, xhr) {
+          xhr.setRequestHeader(/*[[${_csrf.headerName}]]*/'', /*[[${_csrf.token}]]*/ '');
+      });
+  </script>
+    <link th:href="@{/css/interview-practice.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="content">
+        <!-- <video id="video" autoplay muted></video> -->
+        <div id="video-container">
+          <video id="video" autoplay muted></video>
+          <div id="countdown">
+            <span id="countdown-num"></span>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill"></div>
+        </div>
+          <div class="flex">
+            <div class="border-container" data-title="Information">
+              <h2 id="position"><b>Position: </b>[[${question.position}]]</h2>
+              <h2 id="question"><b>Question: </b>[[${question.question}]]</h2>
+            </div>
+           
+              <h2 id="question"><b>Max Time Remaining: </b><span id="time"></span></h2>
+              <div id="controls">
+                <button id="access-camera" class="btn">Access Camera</button>
+                <button id="record-btn" class="btn hidden">Record</button>
+                <button id="stop-btn" class="btn hidden">Stop</button>
+                <button id="restart-btn" class="btn hidden">Restart</button>
+                <button id="submit-btn" class="btn hidden">Anaylze</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script th:inline="javascript">
+      var questionData = /*[[${question}]]*/ null;
+  </script>
+    <script
+      type="text/javascript"
+      th:src="@{/js/interview-practice.js}"
+    ></script>
+  </body>
+</html>

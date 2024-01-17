@@ -60,24 +60,23 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure cors & secure the /api
 		http.cors().disable();
-		http.authorizeHttpRequests().requestMatchers("/**").permitAll();
-//		http.headers().xssProtection();
-//		 http
-//            .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and().httpBasic().and().formLogin()
-//      .loginPage("/login")
-//      .defaultSuccessUrl("/user/interview-selection", false)
-//      .failureUrl("/login?error=true")
-//      .and()
-//      .logout()
-//      .logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
-//      .deleteCookies("JSESSIONID").and().authorizeHttpRequests().
-//		requestMatchers("/api/**","register/**","/css/**","/js/**", "/img/**", "/dev/**", "/login","/").permitAll()
-//		.and().authorizeHttpRequests().
-//		requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
-//		.and().authorizeHttpRequests()
-//		.requestMatchers("/admin/**").hasAuthority("ADMIN");
+		http.headers().xssProtection();
+		 http
+            .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and().httpBasic().and().formLogin()
+      .loginPage("/login")
+      .defaultSuccessUrl("/user/interview-selection", false)
+      .failureUrl("/login?error=true")
+      .and()
+      .logout()
+      .logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
+      .deleteCookies("JSESSIONID").and().authorizeHttpRequests().
+		requestMatchers("/api/**","register/**","/css/**","/js/**", "/img/**", "/dev/**", "/login","/").permitAll()
+		.and().authorizeHttpRequests().
+		requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
+		.and().authorizeHttpRequests()
+		.requestMatchers("/admin/**").hasAuthority("ADMIN");
 		return http.build();
 	}
 

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.0" width="160.000000pt" height="160.000000pt" viewBox="0 0 129.401 128.834" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="730" y1="515" x2="730" y2="1520" id="gradient-1" gradientTransform="matrix(0.737369, 0.675488, -0.72279, 0.789002, 1018.890121, -242.673269)">
+      <stop offset="0" style="stop-color: rgb(94, 140, 255);"/>
+      <stop offset="1" style="stop-color: rgb(2, 255, 255);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="470" y1="390" x2="470" y2="1380" id="gradient-2" gradientTransform="matrix(0.610542, 0.791984, -0.660584, 0.509245, 725.641614, -114.364187)">
+      <stop offset="0" style="stop-color: rgb(112, 162, 255);"/>
+      <stop offset="1" style="stop-color: rgb(0, 255, 247);"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="841.532" y1="-833.083" x2="841.532" y2="-789.609" id="gradient-4">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="801.56" y1="-791.289" x2="801.56" y2="-748.483" id="gradient-5">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="894.672" y1="-1022.466" x2="894.672" y2="-966.006" id="gradient-6">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="894.741" y1="-1022.38" x2="894.741" y2="-965.925" id="gradient-7">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="625.758" y1="-730.111" x2="625.758" y2="-686.637" id="gradient-8">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+    <linearGradient gradientUnits="userSpaceOnUse" x1="585.784" y1="-688.317" x2="585.784" y2="-645.512" id="gradient-9">
+      <stop offset="0" style="stop-color: #bada55"/>
+      <stop offset="1" style="stop-color: #758d29"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0.000000,160.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+    <path d="M82 1537 c-50 -53 -13 -137 59 -137 47 0 79 34 79 81 0 71 -90 107 -138 56z" style="fill: rgb(0, 255, 247);"/>
+    <path d="M267 1492 c-25 -26 -27 -35 -27 -112 l0 -84 43 42 43 42 335 0 335 0 32 -33 32 -33 0 -320 0 -319 80 -80 80 -80 0 466 0 465 -38 37 -38 37 -425 0 -425 0 -27 -28z" style="paint-order: fill; fill: url(#gradient-1);"/>
+    <path d="M60 922 l0 -458 38 -37 38 -37 350 0 351 0 21 23 c19 20 22 35 22 107 l0 84 -33 -32 -33 -32 -265 0 -265 0 -32 33 -32 33 0 387 0 387 -80 0 -80 0 0 -458z" style="fill: url(#gradient-2);"/>
+    <g transform="matrix(1, 0, 0, 1, 0.810127, -4.861197)">
+      <g>
+        <g>
+          <g>
+            <g>
+              <g>
+                <g>
+                  <path d="M 821.842 790.295 L 779.827 747.999 L 957.89 568.743 L 1135.954 390.495 L 1177.969 433.798 L 1219.985 476.094 L 1041.921 655.349 L 863.857 833.597 L 821.842 790.295 Z" style="stroke-width: 0px; stroke: rgb(252, 14, 14); paint-order: fill; fill: rgb(87, 152, 255);"/>
+                  <g>
+                    <g>
+                      <g>
+                        <rect x="819.743" y="-833.083" width="43.578" height="43.474" style="stroke-width: 0px; stroke: url(#gradient-4); fill: rgb(87, 152, 255);" transform="matrix(1, 0, 0, -1, 0, 0)"/>
+                        <rect x="780.3" y="-791.289" width="42.52" height="42.806" style="stroke-width: 0px; stroke: url(#gradient-5); fill: rgb(87, 152, 255);" transform="matrix(1, 0, 0, -1, 0, 0)"/>
+                        <rect x="873.129" y="-1022.466" width="43.085" height="56.46" style="stroke-width: 0px; stroke: url(#gradient-6); fill: rgb(87, 152, 255);" transform="matrix(0.720927, -0.693011, -0.688208, -0.725544, -513.771923, 696.126152)"/>
+                      </g>
+                    </g>
+                  </g>
+                  <g>
+                    <rect x="873.197" y="-1022.38" width="43.088" height="56.455" style="stroke-width: 0px; stroke: url(#gradient-7); fill: rgb(87, 152, 255);" transform="matrix(-0.71271, 0.701458, 0.696705, 0.717389, 2514.389229, 511.790185)" bx:origin="4.519 0.891"/>
+                    <g>
+                      <rect x="603.969" y="-730.111" width="43.578" height="43.474" style="stroke-width: 0px; stroke: url(#gradient-8); fill: rgb(87, 152, 255);" transform="matrix(-0.99993, 0.011857, 0.0117, 0.999932, 1791.842653, 1113.570786)" bx:origin="2.418 3.947"/>
+                      <rect x="564.524" y="-688.317" width="42.52" height="42.805" style="stroke-width: 0px; stroke: url(#gradient-9); fill: rgb(87, 152, 255);" transform="matrix(-0.99993, 0.011857, 0.0117, 0.999932, 1791.840474, 1113.569578)" bx:origin="3.406 3.033"/>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

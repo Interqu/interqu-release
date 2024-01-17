@@ -16,7 +16,7 @@ import net.bytebuddy.utility.RandomString;
 
 @Controller
 @RequestMapping("/api/admin")
-public class AdminAPI extends API{
+public class AdminAPI {
 
 	@Autowired
 	private PendingUserRepository pendingUserRepo;

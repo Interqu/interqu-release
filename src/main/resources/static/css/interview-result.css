@@ -1,0 +1,111 @@
+/* Global Styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0 0 20px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #222;
+}
+
+/* Score Section */
+
+.score {
+  /* display: flex; */
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.score-bar {
+  flex-basis: calc(33.33% - 20px);
+  text-align: center;
+  padding: 20px;
+}
+
+.score-bar h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.score-progress {
+  height: 20px;
+  background-color: #ddd;
+  position: relative;
+}
+
+.score-progress:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.5s ease;
+}
+
+.score-description {
+  margin-top: 10px;
+}
+
+.score-description p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #777;
+}
+
+/* Timer Section */
+
+.timer {
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.timer h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  color: #222;
+}
+
+.timer p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #777;
+}
+
+video {
+  /* width: 320px; */
+  width: 600px;
+  max-width: 50%;
+  /* height: 240px; */
+  padding: 20px;
+}
