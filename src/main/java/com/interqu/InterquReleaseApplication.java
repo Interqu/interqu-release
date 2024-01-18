@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories
 public class InterquReleaseApplication {
 
-	public static final String SITE_URL = "http://localhost:8080";
-	public static final String BETA_USER_REGISTER_URL = "/betaRegistration?code=";
+	public static final String SITE_URL = "http://localhost:8888";
 	
 	public static void main(String[] args) {
 		SpringApplication.run(InterquReleaseApplication.class, args);
