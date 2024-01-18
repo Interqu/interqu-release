@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.interqu.InterquReleaseApplication;
-import com.interqu.user.PendingUser;
 import com.interqu.user.User;
 import com.interqu.utils.Constants;
 
@@ -21,29 +20,8 @@ public class EmailSenderService{
 	
 	private final String fromAddress = "interqu.service@gmail.com";
 	private final String senderName = "Interqu System";
-	
-	@Async
-	public void sendTestUserRegistrationEmail(PendingUser user) {
-		try {
-			String subject = "Interqu Beta User Registration";
-			String registerURL = InterquReleaseApplication.SITE_URL + "/dev" + Constants.BETA_USER_REGISTER_URL +  user.getRegistrationCode();	
-			String content = "Hi " + user.getFullName()+ ", \n Please register here for the beta users + \n" + registerURL;
-			
-			MimeMessage message = emailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message);
-			
-			helper.setFrom(fromAddress, senderName);
-			helper.setTo(user.getEmail());
-			helper.setSubject(subject);
-			
-			helper.setText(content,true);
-			emailSender.send(message);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
 
-		@Async
+	@Async
 	public void sendUserVerificationCode(User user) {
 		try {
 			String subject = "Interqu User Verification";
@@ -58,7 +36,7 @@ public class EmailSenderService{
 			helper.setSubject(subject);
 			
 			// helper.setText(content,true);
-			//TODO use jsp pages instead
+			//TODO send from file instead
 			message.setContent("<!DOCTYPE html>\r\n" + //
 					"<html>\r\n" + //
 					"<head>\r\n" + //

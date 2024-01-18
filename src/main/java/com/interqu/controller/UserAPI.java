@@ -1,35 +1,50 @@
 package com.interqu.controller;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.interqu.db.PendingUserRepository;
 import com.interqu.db.RoleRepository;
 import com.interqu.db.UserRepository;
 import com.interqu.email.EmailSenderService;
-import com.interqu.errors.ErrorReport;
+import com.interqu.exceptions.IncorrectCredentialsException;
+import com.interqu.exceptions.NoEmailOrPassException;
+import com.interqu.exceptions.UserAlreadyRegisteredException;
+import com.interqu.exceptions.UserNotFoundException;
+import com.interqu.exceptions.UserNotLoggedIn;
+import com.interqu.jwt.JwtUtil;
+import com.interqu.models.JWTResponseObject;
+import com.interqu.models.UserInfoResponseObject;
 import com.interqu.roles.Role;
+import com.interqu.user.CustomUserDetails;
 import com.interqu.user.CustomUserDetailsService;
-import com.interqu.user.PendingUser;
 import com.interqu.user.User;
 
-import io.netty.util.internal.SocketUtils;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import net.bytebuddy.utility.RandomString;
 
-@Controller
+@RestController
 @RequestMapping("/api/user/")
 public class UserAPI extends API{
     
+	@Autowired
+	private JwtUtil jwtUtil;
+	
 	@Autowired
 	private UserRepository userRepo;
 
@@ -39,83 +54,84 @@ public class UserAPI extends API{
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 
-	@Autowired
-	private RoleRepository roleRepo;
-
-	@Autowired
-	private PendingUserRepository pendingUserRepo;
-
 	@PostMapping("authenticate")
-	public ModelAndView authneticateUser(User user, HttpServletRequest request) {
-		UserDetails UD = customUserDetailsService.loadUserByUsername(user.getEmail());
-		if (UD != null) {
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String encodedPassword = passwordEncoder.encode(user.getPassword());
-			if (UD.getPassword().equals(encodedPassword)) {
-				return new ModelAndView("interview-selection");
-			}
+	public ResponseEntity<JWTResponseObject> authneticateUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserNotFoundException, IncorrectCredentialsException {
+		//Ensure provided user has an email and password
+		if(user.getEmail() == null || user.getPassword() == null) {
+			throw new NoEmailOrPassException();
 		}
-		ModelAndView inccorectInfo = new ModelAndView("login");
-		inccorectInfo.addObject("Error", "Invalid Login Credentials");
-		return inccorectInfo;
+		//Find user
+		UserDetails UD = customUserDetailsService.loadUserByUsername(user.getEmail());
+		if(UD == null) {
+			throw new UserNotFoundException("User " + user.getEmail() + " was not found.");
+		}
+		//Check if password match
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		boolean passwordMatch = passwordEncoder.matches(user.getPassword(), UD.getPassword());
+		if (!passwordMatch) {
+			throw new IncorrectCredentialsException();
+		}
+		
+		//generate JWT
+		String jwt = jwtUtil.generateToken(user.getEmail());
+		
+		//preparing return obj
+		JWTResponseObject jwtObj = new JWTResponseObject(jwt, user.getEmail());
+		
+		return ResponseEntity.ok(jwtObj);
 	}
+	
+	@GetMapping("getInfo")
+	public ResponseEntity<UserInfoResponseObject> getUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		//Assert there is a logged in user - sainity check
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            throw new UserNotLoggedIn();
+        }
+        
+        //getting user details
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        String name = userDetails.getName();
+        
+        return ResponseEntity.ok(new UserInfoResponseObject(username, name));
+	}
+	
+	
 	@PostMapping("/register")
 	@ResponseBody
-	public String registerUser(@RequestBody User user, HttpServletRequest request) {
-		try {
-			// Check if Account already exist
-			User checkUser = userRepo.findByEmail(user.getEmail());
-			if (checkUser != null) {
-				// ModelAndView modelAndView = new ModelAndView("/login");
-				// modelAndView.addObject("Email Exists", "Email Already Exist!");
-				// return modelAndView;
-				return "email exists!";
-			}
-			// Encrypting password
-			// BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			String encodedPassword = passwordEncoder.encode(user.getPassword());
-			user.setPassword(encodedPassword);
-			user.setId(UUID.randomUUID().toString());
-			//TODO implement role repo;
-			user.addRole(roleRepo.findByName("ADMIN"));
-			// Generating verification code TODO
-			String randomCode = RandomString.make(64);
-			user.setVerificationCode(randomCode);
-			user.setVerified(false);
-			userRepo.save(user);
-			//Send Verification Email;
-			emailSenderService.sendUserVerificationCode(user);
-			// ModelAndView modelAndView = new ModelAndView("/registerSuccess");
-			// return modelAndView;
-			return "Success! Please check email: " + user.getEmail();
-
-		} catch (Exception e) {
-			ModelAndView modelAndView = new ModelAndView( "login");
-			// ErrorReport error = new ErrorReport("SignUp Error", "Register User", e.getMessage());
-			// modelAndView.addObject("Unexpected Error", "An unexpected error has occured.");
-			e.printStackTrace();
-			return "Unexpected error has occrred";
+	public ResponseEntity<String> registerUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserAlreadyRegisteredException {
+		//Ensure provided user has an email and password
+		if(user.getEmail() == null || user.getPassword() == null) {
+			throw new NoEmailOrPassException();
 		}
-	}
-
-	@PostMapping("/updateUser")
-	@ResponseBody
-	public String updateUser(User user, HttpServletRequest request) {
-		try {
-			User userInfo = userRepo.findByEmail(request.getUserPrincipal().getName());
-			User checkUser = userRepo.findByEmail(user.getEmail());
-
-			System.out.println(userInfo.getFirstName());
-			return "Working";
-			
-		} catch (Exception e) {
-			ModelAndView modelAndView = new ModelAndView( "login");
-			// ErrorReport error = new ErrorReport("SignUp Error", "Register User", e.getMessage());
-			// modelAndView.addObject("Unexpected Error", "An unexpected error has occured.");
-			e.printStackTrace();
-			return "Unexpected error has occurred";
+		//See if user is already registered
+		UserDetails UD = customUserDetailsService.loadUserByUsername(user.getEmail());
+		if(UD != null) {
+			throw new UserAlreadyRegisteredException("User " + user.getEmail() + " is already registered");
 		}
+		
+		//Encrypting password
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
+		
+		//Set other params
+		user.setId(UUID.randomUUID().toString());
+		user.setDateRegistered(new Date(System.currentTimeMillis()));
+		//TODO Roles
+		//user.addRole(Role.USER);
+		
+		//generate verification code
+		String randomCode = RandomString.make(64);
+		user.setVerificationCode(randomCode);
+		user.setVerified(false);
+		userRepo.save(user);
+		
+		//send email
+		emailSenderService.sendUserVerificationCode(user);
+		
+		return ResponseEntity.ok("User Registered Successfully. Verfication Email Sent.");
 	}
 
 }

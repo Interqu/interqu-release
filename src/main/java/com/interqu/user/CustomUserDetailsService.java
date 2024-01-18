@@ -33,7 +33,6 @@ public class CustomUserDetailsService implements UserDetailsService{
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
-            System.out.println(user);
 
             return new CustomUserDetails(user,getAuthorities(user.getRoles()));
         } catch (Exception e) {

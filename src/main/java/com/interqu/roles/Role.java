@@ -8,7 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("roles")
 public class Role {
-    
+	
+	public static final String USER = "USER";
+	
     @Id
     private String id;
     private String name;

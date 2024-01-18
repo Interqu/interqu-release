@@ -8,21 +8,26 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.interqu.jwt.JwtRequestFilter;
 import com.interqu.user.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig implements WebMvcConfigurer {
 
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		return new CustomUserDetailsService();
@@ -59,25 +64,12 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure cors & secure the /api
-		http.cors().disable();
-		http.authorizeHttpRequests().requestMatchers("*").permitAll();
-//		http.headers().xssProtection();
-//		 http
-//            .csrf()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                .and().httpBasic().and().formLogin()
-//      .loginPage("/login")
-//      .defaultSuccessUrl("/user/interview-selection", false)
-//      .failureUrl("/login?error=true")
-//      .and()
-//      .logout()
-//      .logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
-//      .deleteCookies("JSESSIONID").and().authorizeHttpRequests().
-//		requestMatchers("/api/**","register/**","/css/**","/js/**", "/img/**", "/dev/**", "/login","/").permitAll()
-//		.and().authorizeHttpRequests().
-//		requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
-//		.and().authorizeHttpRequests()
-//		.requestMatchers("/admin/**").hasAuthority("ADMIN");
+		http.csrf().disable();
+		//configure authenticated endpoints
+		http.authorizeHttpRequests().requestMatchers("/api/user/authenticate", "/api/user/register").permitAll()
+		.anyRequest().authenticated()
+		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
