@@ -1,5 +1,9 @@
 package com.interqu.email;
 
+import java.io.UnsupportedEncodingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -10,6 +14,7 @@ import com.interqu.InterquReleaseApplication;
 import com.interqu.user.User;
 import com.interqu.utils.Constants;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
@@ -21,9 +26,10 @@ public class EmailSenderService{
 	private final String fromAddress = "interqu.service@gmail.com";
 	private final String senderName = "Interqu System";
 
+	private static final Logger logger = LoggerFactory.getLogger(EmailSenderService.class);
+	
 	@Async
-	public void sendUserVerificationCode(User user) {
-		try {
+	public void sendUserVerificationCode(User user) throws MessagingException, UnsupportedEncodingException{
 			String subject = "Interqu User Verification";
 			String registerURL = InterquReleaseApplication.SITE_URL + "/register" + Constants.USER_VERIFICATION_URL +  user.getVerificationCode();	
 			String content = "Hi " + user.getFirstName()+ ", \n Please click here to verify your account! + \n" + registerURL;
@@ -118,9 +124,7 @@ public class EmailSenderService{
 					"</html>\r\n" + //
 					"","text/html");
 			emailSender.send(message);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+			logger.info("Verification Code Email Sent Successfully To: " + user.getEmail());
 	}
 	
 }

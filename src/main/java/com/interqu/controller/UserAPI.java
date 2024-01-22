@@ -1,5 +1,6 @@
 package com.interqu.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ import com.interqu.user.CustomUserDetails;
 import com.interqu.user.CustomUserDetailsService;
 import com.interqu.user.User;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.bytebuddy.utility.RandomString;
@@ -56,6 +58,7 @@ public class UserAPI extends API{
 
 	@PostMapping("authenticate")
 	public ResponseEntity<JWTResponseObject> authneticateUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserNotFoundException, IncorrectCredentialsException {
+		logger.info("/authenticate: " + user.getEmail() + " is trying to authenticate.");
 		//Ensure provided user has an email and password
 		if(user.getEmail() == null || user.getPassword() == null) {
 			throw new NoEmailOrPassException();
@@ -77,12 +80,13 @@ public class UserAPI extends API{
 		
 		//preparing return obj
 		JWTResponseObject jwtObj = new JWTResponseObject(jwt, user.getEmail());
-		
+		logger.info("/authenticate: successfully authenticated: " + user.getEmail());
 		return ResponseEntity.ok(jwtObj);
 	}
 	
 	@GetMapping("getInfo")
 	public ResponseEntity<UserInfoResponseObject> getUserInfo(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		logger.info("/getInfo: " + " getting user info.");
 		//Assert there is a logged in user - sainity check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
@@ -93,14 +97,15 @@ public class UserAPI extends API{
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
         String name = userDetails.getName();
-        
+        logger.info("/getInfo: successfully retrived user data: " + username);
         return ResponseEntity.ok(new UserInfoResponseObject(username, name));
 	}
 	
 	
 	@PostMapping("/register")
 	@ResponseBody
-	public ResponseEntity<String> registerUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserAlreadyRegisteredException {
+	public ResponseEntity<String> registerUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserAlreadyRegisteredException, UnsupportedEncodingException, MessagingException {
+		logger.info("/register: " + " registering " + user.getEmail());
 		//Ensure provided user has an email and password
 		if(user.getEmail() == null || user.getPassword() == null) {
 			throw new NoEmailOrPassException();
@@ -130,7 +135,7 @@ public class UserAPI extends API{
 		
 		//send email
 		emailSenderService.sendUserVerificationCode(user);
-		
+		logger.info("/register: successfully registered user: " + user.getEmail());
 		return ResponseEntity.ok("User Registered Successfully. Verfication Email Sent.");
 	}
 
