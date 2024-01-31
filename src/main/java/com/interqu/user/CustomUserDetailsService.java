@@ -27,7 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		try {
             User user = userRepo.findByEmail(username);
 
             if (user == null) {
@@ -35,11 +34,6 @@ public class CustomUserDetailsService implements UserDetailsService{
             }
 
             return new CustomUserDetails(user,getAuthorities(user.getRoles()));
-        } catch (Exception e) {
-            // e.printStackTrace();
-            System.err.println("User not found: " + username);
-        }
-        throw new UsernameNotFoundException("User not found");
 	}
     private List<GrantedAuthority> getAuthorities(Set<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<>();

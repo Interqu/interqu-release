@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +58,7 @@ public class UserAPI extends API{
 	private CustomUserDetailsService customUserDetailsService;
 
 	@PostMapping("authenticate")
-	public ResponseEntity<JWTResponseObject> authneticateUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserNotFoundException, IncorrectCredentialsException {
+	public ResponseEntity<JWTResponseObject> authneticateUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserNotFoundException,UsernameNotFoundException, IncorrectCredentialsException {
 		logger.info("/authenticate: " + user.getEmail() + " is trying to authenticate.");
 		//Ensure provided user has an email and password
 		if(user.getEmail() == null || user.getPassword() == null) {
