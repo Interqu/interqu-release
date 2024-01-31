@@ -6,6 +6,7 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -32,6 +33,12 @@ public class CustomExceptionHandler {
 		logger.warn(e.getMessage());
 		return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(e.getMessage());
 	}
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<String> handleUserNotFoundException2(UsernameNotFoundException e){
+		logger.warn(e.getMessage());
+		return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(e.getMessage());
+	}
+	
 	
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e){
