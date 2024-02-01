@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,22 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.interqu.db.RoleRepository;
-import com.interqu.db.UserRepository;
-import com.interqu.email.EmailSenderService;
 import com.interqu.exceptions.IncorrectCredentialsException;
 import com.interqu.exceptions.NoEmailOrPassException;
 import com.interqu.exceptions.UserAlreadyRegisteredException;
 import com.interqu.exceptions.UserNotFoundException;
 import com.interqu.exceptions.UserNotLoggedIn;
-import com.interqu.jwt.JwtUtil;
 import com.interqu.models.JWTResponseObject;
 import com.interqu.models.UserInfoResponseObject;
-import com.interqu.roles.Role;
 import com.interqu.user.CustomUserDetails;
-import com.interqu.user.CustomUserDetailsService;
 import com.interqu.user.User;
 
 import jakarta.mail.MessagingException;
@@ -44,18 +35,6 @@ import net.bytebuddy.utility.RandomString;
 @RestController
 @RequestMapping("/api/user/")
 public class UserAPI extends API{
-    
-	@Autowired
-	private JwtUtil jwtUtil;
-	
-	@Autowired
-	private UserRepository userRepo;
-
-	@Autowired
-	private EmailSenderService emailSenderService;
-
-	@Autowired
-	private CustomUserDetailsService customUserDetailsService;
 
 	@PostMapping("authenticate")
 	public ResponseEntity<JWTResponseObject> authneticateUser(@RequestBody User user, HttpServletRequest request) throws NoEmailOrPassException, UserNotFoundException,UsernameNotFoundException, IncorrectCredentialsException {
