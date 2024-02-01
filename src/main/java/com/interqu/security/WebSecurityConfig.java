@@ -48,6 +48,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	    CorsConfiguration config = new CorsConfiguration();
 	    config.setAllowCredentials(true);
 	    config.addAllowedOrigin("http://localhost:4200");
+	    config.addAllowedOrigin("https://interqu.com/");
 	    config.addAllowedHeader("*");
 	    config.addAllowedMethod("*");
 	    source.registerCorsConfiguration("/**", config);
