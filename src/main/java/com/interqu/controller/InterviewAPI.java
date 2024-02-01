@@ -3,6 +3,8 @@ package com.interqu.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.interqu.db.InterviewQuestionRepository;
 import com.interqu.db.InterviewVideoDataRepository;
 import com.interqu.db.PositionRepository;
-import com.interqu.db.QuestionTipsRepository;
 import com.interqu.db.UserRepository;
 import com.interqu.interviews.InterviewVideoData;
 import com.interqu.interviews.Position;
 import com.interqu.interviews.questions.Question;
-import com.interqu.interviews.questions.QuestionTips;
 import com.interqu.process.FileService;
 import com.interqu.user.User;
 import com.interqu.utils.Utils;
@@ -33,29 +33,8 @@ import com.interqu.utils.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("api")
+@RequestMapping("/api/interview")
 public class InterviewAPI extends API{
-
-    @Autowired
-    private PositionRepository positionRepo;
-
-    @Autowired
-    private InterviewQuestionRepository iqRepo;
-
-    @Autowired
-    private InterviewVideoDataRepository ivdRepo;
-
-    @Autowired
-    private InterviewQuestionRepository questionRepo;
-
-    @Autowired
-    private QuestionTipsRepository qtRepo;
-
-    @Autowired
-    private UserRepository userRepo;
-
-    @Autowired
-    private FileService fileService;
 
     @PostMapping("/getPositions")
     @ResponseBody
@@ -65,19 +44,29 @@ public class InterviewAPI extends API{
 
     @PostMapping("/getQuestions")
     @ResponseBody
-    public List<Question> getQuestionByPosition(@RequestBody String position) {
-        return iqRepo.findByPosition(position);
-    }
-
-    @PostMapping("/getInterviewTip")
-    @ResponseBody
-    public List<String> getInterviewTipByQuestion(@RequestBody Question question) {
-        // TODO check if user has authority to check
-        QuestionTips q = qtRepo.findByQuestionId(question.getQuestionId());
-        if(q != null){
-            return q.getTips();
-        }
-        return new ArrayList<String>();
+    public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) {
+    	
+    	// Search by Id
+    	if(questionQuery.getQuestionId() != null && !questionQuery.getQuestionId().isEmpty()) {
+    		return iqRepo.findByQuestionId(questionQuery.getQuestionId());
+    	}
+    	
+    	// Search by question and position
+    	if(questionQuery.getPosition() != null && !questionQuery.getPosition().isEmpty() && questionQuery.getQuestion() != null && !questionQuery.getQuestion().isEmpty()) {
+    		return iqRepo.findByPositionContainingAndQuestionContaining(questionQuery.getPosition(), questionQuery.getQuestion());
+    	}
+    	
+    	// Search by position
+    	if(questionQuery.getPosition() != null && !questionQuery.getPosition().isEmpty()) {
+    		return iqRepo.findByPosition(questionQuery.getPosition());
+    	}
+    	
+    	// Search by question
+    	if(questionQuery.getQuestion() != null && !questionQuery.getQuestion().isEmpty()) {
+    		return iqRepo.findByQuestionContaining(questionQuery.getQuestion());
+    	}
+    	// Default: return all questions if no query params were valid.
+    	return iqRepo.findAll();
     }
 
     @PostMapping("/uploadInterview")
@@ -94,7 +83,7 @@ public class InterviewAPI extends API{
             if(user == null){
                 return new ResponseEntity<>("You do not have access to this page!", HttpStatus.FORBIDDEN);
             }
-            Question question = questionRepo.findByQuestionId(questionId);
+            Question question = questionRepo.findByQuestionId(questionId).get(0);
             
             ivd= Utils.setInterviewVideoData(user, question);
             ivdRepo.insert(ivd);
@@ -106,30 +95,6 @@ public class InterviewAPI extends API{
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }catch(Exception e){
             ivdRepo.delete(ivd);
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //FOR DEV ONLY
-    @PostMapping("/insertQuestion")
-    public ResponseEntity<String> insertQuestion(@RequestBody Map<String, Object> interviewQuestions){
-        try{
-            //ensure question is unique
-            Question questions = new Question((Map<String,Object>)interviewQuestions.get("Question"));
-            if(questionRepo.findByPositionAndQuestion(questions.getPosition(), questions.getQuestion())!=null){
-                return new ResponseEntity<>("Question already exists!", HttpStatus.ALREADY_REPORTED);
-            }
-            QuestionTips questionTips = new QuestionTips((List<String>)interviewQuestions.get("QuestionTips"));
-            if(questions==null || questionTips==null){
-                return new ResponseEntity<>("RequestBody would not be parsed", HttpStatus.BAD_REQUEST);
-            }
-            questionTips.setQuestion(questions.getQuestion());
-            questionTips.setQuestionId(questions.getQuestionId());
-            questionRepo.insert(questions);
-            qtRepo.insert(questionTips);
-            return new ResponseEntity<>("Successful", HttpStatus.OK);
-        }catch(Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
