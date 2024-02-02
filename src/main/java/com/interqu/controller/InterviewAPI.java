@@ -1,49 +1,38 @@
 package com.interqu.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.interqu.db.InterviewQuestionRepository;
-import com.interqu.db.InterviewVideoDataRepository;
-import com.interqu.db.PositionRepository;
-import com.interqu.db.UserRepository;
 import com.interqu.interviews.InterviewVideoData;
 import com.interqu.interviews.Position;
+import com.interqu.interviews.Result;
 import com.interqu.interviews.questions.Question;
-import com.interqu.process.FileService;
 import com.interqu.user.User;
 import com.interqu.utils.Utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequestMapping("/api/interview")
 public class InterviewAPI extends API{
 
     @PostMapping("/getPositions")
-    @ResponseBody
     public List<Position> getPositions() {
         return positionRepo.findAll();
     }
 
     @PostMapping("/getQuestions")
-    @ResponseBody
     public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) {
     	
     	// Search by Id
@@ -69,6 +58,22 @@ public class InterviewAPI extends API{
     	return iqRepo.findAll();
     }
 
+    @PostMapping("/getInterviewResult")//TODO TEST THIS FUNCTION
+    public Optional<Result> getInterviewResult(@RequestBody Result result) {
+
+    	// Find by id - gets one interview
+    	if(result.getId() != null && !result.getId().isEmpty()) {
+    		return irRepo.findById(result.getId());
+    	}
+    	
+    	// Find by email - gets all the collections of interview done by a user.
+    	if(result.getEmail() != null && !result.getId().isEmpty()) {
+    		return irRepo.findByEmail(result.getEmail());
+    	}
+    	
+		return null;
+    }
+    
     @PostMapping("/uploadInterview")
     public ResponseEntity<?> processInterview(HttpServletRequest request, @RequestParam("video") MultipartFile file, @RequestParam("questionId") String questionId){
         InterviewVideoData ivd;
