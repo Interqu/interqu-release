@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.interqu.InterquReleaseApplication;
 import com.interqu.db.InterviewQuestionRepository;
+import com.interqu.db.InterviewResultRepository;
 import com.interqu.db.InterviewVideoDataRepository;
 import com.interqu.db.PositionRepository;
 import com.interqu.db.UserRepository;
@@ -36,6 +37,9 @@ public class API {
 
     @Autowired
     protected InterviewQuestionRepository questionRepo;
+    
+    @Autowired
+    protected InterviewResultRepository irRepo;
 
     @Autowired
     protected UserRepository userRepo;
