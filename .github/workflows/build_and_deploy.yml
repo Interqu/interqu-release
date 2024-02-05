@@ -73,7 +73,12 @@ jobs:
           platforms: linux/amd64, linux/arm64
           push: true
           tags: lefanhu/interqu-spring-boot:latest
+    
+  deploy_image:
+    needs: build_image
+    runs-on: ubuntu-latest
 
+    steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@v0.1.10
         with:
