@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.interqu.interviews.Result;
 import com.interqu.interviews.data.VisualData;
 import com.interqu.interviews.questions.Question;
-import com.interqu.process.ContentAnaylze;
-
-import io.netty.handler.codec.http.HttpMethod;
 
 @Controller
 @RequestMapping("dev")
@@ -95,5 +92,16 @@ public class DevController extends API{
     	}
     	return ResponseEntity.ok("Success.");
     }
+    
+    @PostMapping("/insertInterviewResult")
+    public ResponseEntity<String> insertInterviewResult(@RequestBody List<Result> results) throws Exception{
+    	
+    	for(Result result : results) {
+    		irRepo.save(result);
+    	}
+    	
+    	return ResponseEntity.ok("Success.");
+    }
+    
 
 }
