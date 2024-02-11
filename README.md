@@ -44,6 +44,23 @@ We are using MongoDB Atlas. It is hosted on an AWS server and is completely remo
 2. Create a interface - see the com.interqu.db package for more details
 3. Send a .save request and check MongoDB Atlas to see if the data has been successfully stored.
 
+# Accessing endpoints via Angular/Postman
+
+## URL Format
+
+All of the backend api endpoints are listed under ${BACKEND_URL}/api/${ENDPOINT_TYPE}/${ENDPOINT_URI}, where BACKEND_URL is the base url to the backend server. The ${ENDPOINT_TYPE} consists of either /user,  /interview, or /admin. Then ${ENDPOINT_URL} is the specific endpoint you are trying to reach. i.e. /getInterviewResults.
+
+## Headers & Authentication
+
+Put in ```'Content-Type': 'application/json' in headers.```
+
+For all API request to backend, other than /user/authenticate or /user/register, must be authenticated. 
+To be authenticated, put the following header ```'Authorization': 'Bearer + ${JWT_TOKEN}'```.
+
+## Payload
+
+Some API endpoints requires a payload. Please refer to the java object for the specific format, or ask Derek.
+
 # Docker-compose Deployment
 
 Below is a sample docker-compose.yml configuration for creating the container.

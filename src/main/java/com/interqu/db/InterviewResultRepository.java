@@ -1,5 +1,6 @@
 package com.interqu.db;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -10,6 +11,6 @@ public interface InterviewResultRepository extends MongoRepository<Result, Strin
     
 	public Optional<Result> findById(String id);
 	
-    public Optional<Result> findByEmail(String email);
+//    public List<Result> findByEmail(String email);
 
 }

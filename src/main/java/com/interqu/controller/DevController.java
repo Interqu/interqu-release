@@ -97,6 +97,7 @@ public class DevController extends API{
     public ResponseEntity<String> insertInterviewResult(@RequestBody List<Result> results) throws Exception{
     	
     	for(Result result : results) {
+    		System.out.println(result.toString());
     		irRepo.save(result);
     	}
     	

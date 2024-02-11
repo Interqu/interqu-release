@@ -4,13 +4,20 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AudioResult {
 
 	@Field("audio_score")
+	@JsonProperty("audio_score")
 	private float score;
+	
 	@Field("audio_timestamps")
+	@JsonProperty("audio_timestamps")
 	private List<String> timestamps;
+	
 	@Field("audio_feedback")
+	@JsonProperty("audio_feedback")
 	private String feedback;
 	
 	public AudioResult() {
