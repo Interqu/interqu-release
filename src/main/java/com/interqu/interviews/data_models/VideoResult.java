@@ -4,13 +4,20 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class VideoResult {
 
 	@Field("video_score")
+	@JsonProperty("video_score")
 	private float score;
+	
 	@Field("video_timestamps")
+	@JsonProperty("video_timestamps")
 	private List<String> timestamps;
+	
 	@Field("video_feedback")
+	@JsonProperty("video_feedback")
 	private String feedback;
 	
 	public VideoResult() {

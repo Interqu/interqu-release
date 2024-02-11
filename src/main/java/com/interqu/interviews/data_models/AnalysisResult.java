@@ -2,15 +2,24 @@ package com.interqu.interviews.data_models;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AnalysisResult {
 
 	@Field("overall")
+	@JsonProperty("overall")
 	private OverallResult overallResult;
+	
 	@Field("video")
+	@JsonProperty("video")
 	private VideoResult videoResult;
+	
 	@Field("audio")
+	@JsonProperty("audio")
 	private AudioResult audioResult;
+	
 	@Field("context")
+	@JsonProperty("context")
 	private ContextResult contextResult;
 	
 	public AnalysisResult() {

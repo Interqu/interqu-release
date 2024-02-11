@@ -2,11 +2,16 @@ package com.interqu.interviews.data_models;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OverallResult {
 
 	@Field("overall_score")
+	@JsonProperty("overall_score")
 	private float score;
+	
 	@Field("overall_summary")
+	@JsonProperty("overall_summary")
 	private String summary;
 	
 	public OverallResult(float score, String summary) {

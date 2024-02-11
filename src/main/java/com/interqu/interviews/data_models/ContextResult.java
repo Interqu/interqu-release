@@ -2,13 +2,20 @@ package com.interqu.interviews.data_models;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ContextResult {
 
 	@Field("context_score")
+	@JsonProperty("context_score")
 	private float score;
+	
 	@Field("transcript")
+	@JsonProperty("transcript")
 	private String transcript;
+	
 	@Field("context_feedback")
+	@JsonProperty("context_feedback")
 	private String feedback;
 	
 	public ContextResult() {

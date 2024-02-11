@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,20 +59,9 @@ public class InterviewAPI extends API{
     	return iqRepo.findAll();
     }
 
-    @PostMapping("/getInterviewResult")//TODO TEST THIS FUNCTION
-    public Optional<Result> getInterviewResult(@RequestBody Result result) {
-
-    	// Find by id - gets one interview
-    	if(result.getId() != null && !result.getId().isEmpty()) {
-    		return irRepo.findById(result.getId());
-    	}
-    	
-    	// Find by email - gets all the collections of interview done by a user.
-    	if(result.getEmail() != null && !result.getId().isEmpty()) {
-    		return irRepo.findByEmail(result.getEmail());
-    	}
-    	
-		return null;
+    @PostMapping("/getInterviewResult")
+    public List<Result> getInterviewResult(@AuthenticationPrincipal UserDetails userDetails, @RequestBody(required = false) Result result) {
+    	return irService.findInterviewResultsByEmail(userDetails.getUsername());
     }
     
     @PostMapping("/uploadInterview")

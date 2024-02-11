@@ -24,6 +24,7 @@ public class CustomExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleException(Exception e){
+		e.printStackTrace();
 		logger.error(e.getMessage());
 		return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
 	}
