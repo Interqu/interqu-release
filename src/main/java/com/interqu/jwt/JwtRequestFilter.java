@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -38,7 +39,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	
 	        String username = null;
 	        String jwt = null;
-	
 	        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 	            jwt = authorizationHeader.substring(7);
 	            username = jwtTokenUtil.extractUsername(jwt);
