@@ -22,6 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.interqu.jwt.JwtRequestFilter;
+import com.interqu.preflight.PreFlightRequestFilter;
 import com.interqu.user.CustomUserDetailsService;
 
 @Configuration
@@ -30,6 +31,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
+	
+	@Autowired
+	private PreFlightRequestFilter preFlightRequestFilter;
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
@@ -77,6 +81,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		authProvider.setPasswordEncoder(passwordEncoder());
 		return authProvider;
 	}
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// TODO configure cors & csrf
@@ -86,7 +91,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		http.authorizeHttpRequests().requestMatchers("/api/user/authenticate", "/api/user/register", "/dev/**", "/api/user/getInterviewResult").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(preFlightRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterAfter(jwtRequestFilter, PreFlightRequestFilter.class);
 		return http.build();
 	}
 
