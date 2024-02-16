@@ -14,6 +14,7 @@ import com.interqu.db.InterviewResultService;
 import com.interqu.db.InterviewVideoDataRepository;
 import com.interqu.db.PositionRepository;
 import com.interqu.db.UserRepository;
+import com.interqu.db.UserRepositoryService;
 import com.interqu.email.EmailSenderService;
 import com.interqu.jwt.JwtUtil;
 import com.interqu.process.ContentAnaylze;
@@ -62,6 +63,9 @@ public class API {
 	
 	@Autowired
 	protected InterviewResultService irService;
+	
+	@Autowired 
+	protected UserRepositoryService userService;
 	
 	@GetMapping("/test")
 	@ResponseBody

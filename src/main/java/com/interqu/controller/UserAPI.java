@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.interqu.exceptions.IncorrectCredentialsException;
 import com.interqu.exceptions.NoEmailOrPassException;
@@ -26,6 +27,7 @@ import com.interqu.models.JWTResponseObject;
 import com.interqu.models.UserInfoResponseObject;
 import com.interqu.user.CustomUserDetails;
 import com.interqu.user.User;
+import com.interqu.utils.Utils;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -76,9 +78,42 @@ public class UserAPI extends API{
         //getting user details
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
-        String name = userDetails.getName();
+        
+        // Querying database
+        User user = userRepo.findByEmail(username);
+        
+        if(user == null) {
+        	throw new UserNotFoundException();
+        }
+        
         logger.info("/getInfo: successfully retrived user data: " + username);
-        return ResponseEntity.ok(new UserInfoResponseObject(username, name));
+        return ResponseEntity.ok(new UserInfoResponseObject(user));
+	}
+	
+	@PostMapping("uploadProfilePicture")
+	public ResponseEntity<?> uploadProfilePicture(HttpServletRequest request, HttpServletResponse response, @RequestBody MultipartFile file) throws Exception{
+		logger.info("/uploadProfilePicture: " + " uploading profile picture.");
+		//Assert there is a logged in user - sainity check
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof CustomUserDetails)) {
+            throw new UserNotLoggedIn();
+        }
+        
+        // Assert that file is 240x240.
+        Utils.assertImageDim(file, 240 , 240);
+        
+        // Convert to bytes
+        byte[] profilePicBytes = file.getBytes();
+        
+        //getting user details
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+        
+        // updating profile picture
+        userService.updateProfilePicture(email, profilePicBytes);
+        
+        logger.info("/uploadProfilePicture(): successfully updated user profile picture: " + email);
+        return ResponseEntity.ok("Success.");
 	}
 	
 	
