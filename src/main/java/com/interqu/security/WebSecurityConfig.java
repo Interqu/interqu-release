@@ -88,7 +88,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 		http.csrf().disable();
 		http.cors().disable();
 		//configure authenticated endpoints
-		http.authorizeHttpRequests().requestMatchers("/api/user/authenticate", "/api/user/register", "/dev/**", "/api/user/getInterviewResult").permitAll()
+		http.authorizeHttpRequests().requestMatchers("/api/user/authenticate", "/api/user/register", "/api/user/user-verification", "/dev/**", "/api/user/getInterviewResult").permitAll()
 		.anyRequest().authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(preFlightRequestFilter, UsernamePasswordAuthenticationFilter.class);
