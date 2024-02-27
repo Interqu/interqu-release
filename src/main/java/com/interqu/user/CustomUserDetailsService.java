@@ -32,7 +32,10 @@ public class CustomUserDetailsService implements UserDetailsService{
             if (user == null) {
                 throw new UsernameNotFoundException("User not found");
             }
-
+            // Update last login.
+            user.login();
+            userRepo.save(user);
+            
             return new CustomUserDetails(user,getAuthorities(user.getRoles()));
 	}
     private List<GrantedAuthority> getAuthorities(Set<Role> roles) {

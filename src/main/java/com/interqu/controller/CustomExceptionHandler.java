@@ -14,6 +14,7 @@ import com.interqu.InterquReleaseApplication;
 import com.interqu.exceptions.IncorrectCredentialsException;
 import com.interqu.exceptions.NoEmailOrPassException;
 import com.interqu.exceptions.UserNotFoundException;
+import com.interqu.exceptions.UserAlreadyRegisteredException;
 
 import jakarta.mail.MessagingException;
 
@@ -34,12 +35,18 @@ public class CustomExceptionHandler {
 		logger.warn(e.getMessage());
 		return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(e.getMessage());
 	}
+	
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public ResponseEntity<String> handleUserNotFoundException2(UsernameNotFoundException e){
+	public ResponseEntity<String> handleUserNotFoundException(UsernameNotFoundException e){
 		logger.warn(e.getMessage());
 		return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body(e.getMessage());
 	}
 	
+	@ExceptionHandler(UserAlreadyRegisteredException.class)
+	public ResponseEntity<String> UserAlreadyRegisteredException(UserAlreadyRegisteredException e){
+		logger.warn(e.getMessage());
+		return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(e.getMessage());
+	}
 	
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e){

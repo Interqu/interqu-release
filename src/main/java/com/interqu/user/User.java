@@ -65,7 +65,7 @@ public class User {
 	@JsonProperty("verification_code")
 	private String verificationCode;
 	
-	//@Field("date_registered")
+	@Field("date_registered")
 	@JsonProperty("date_registered")
 	private Date dateRegistered;
 	
@@ -73,7 +73,7 @@ public class User {
 	@JsonProperty("subscription")
 	private Subscription subscription;
 	
-	//@Field("last_login")
+	@Field("last_login")
 	@JsonProperty("last_login")
 	private Date lastLogin;
 	
@@ -221,6 +221,11 @@ public class User {
 
 	public Date getLastLogin() {
 		return lastLogin;
+	}
+	
+	public void login() {
+		Date currentDate = new Date(System.currentTimeMillis());
+		this.setLastLogin(currentDate);
 	}
 
 
