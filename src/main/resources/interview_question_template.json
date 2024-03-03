@@ -1,0 +1,11 @@
+[
+  {
+    "position": "The position of the job role",
+    "question": "The actual question itself",
+    "tips": "An array of 5 tips on how to answer the interview questions. Format it like 'Title: description'",
+    "employers_look_for": "An array of 5 things that employers will look for specifically when asking this question. Format it like 'Title: description'",
+    "avoid_mentioning": "An array of 5 things that interviewee should avoid mentioning when answering this question. Format it like 'Title: description'",
+    "companies": "An array of 2-4 companies that might have this job position and use this question",
+    "skills": "An array of 2-5 skills that are useful for this job. can be technical skills like C++, or soft skills"
+  }
+]
