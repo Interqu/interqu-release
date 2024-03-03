@@ -1,0 +1,29 @@
+[
+  {
+    "position": "Firmware Engineer",
+    "question": "Which accomplishment are you most proud of?",
+    "tips": [
+      "Choose a relevant accomplishment: Try to select an accomplishment that is relevant to the job you are applying for. This will demonstrate that you have the skills and experience required for the role.",
+      "Be specific: Provide details about the accomplishment and explain why it was meaningful to you. Use concrete examples and metrics to illustrate your achievement.",
+      "Highlight your skills: Explain how your accomplishment demonstrates your skills, such as problem-solving, leadership, or communication. This will help the interviewer understand how you can add value to the company.",
+      "Show your passion: If possible, choose an accomplishment that you are passionate about. This will demonstrate your enthusiasm and dedication to your work.",
+      "Be humble: While it is important to showcase your accomplishments, it is equally important to be humble. Make sure you give credit to others who helped you achieve your goal and acknowledge any challenges you faced along the way."
+    ],
+    "employers_look_for": [
+      "Relevance to the position: Employers want to see accomplishments that are directly relevant to the job to understand how your past successes can predict future performance.",
+      "Impact and results: Companies are interested in candidates who can demonstrate their ability to achieve significant results and make an impact on their team or organization.",
+      "Problem-solving abilities: Your ability to identify challenges and implement effective solutions is highly valued.",
+      "Leadership and teamwork: Demonstrating leadership skills or effective teamwork shows that you can work well with others and possibly lead projects or teams.",
+      "Growth and learning: Employers appreciate candidates who are committed to personal and professional growth, as evidenced by their accomplishments."
+    ],
+    "avoid_mentioning": [
+      "Being vague: Avoid giving a general or nonspecific response. Be detailed about what you accomplished and the impact it had.",
+      "Choosing non-relevant accomplishments: Select accomplishments that showcase skills and experiences relevant to the job you’re applying for.",
+      "Exaggerating your role: Be honest about your contribution to the accomplishment. Misrepresenting your involvement can be easily discovered and negatively impact your credibility.",
+      "Ignoring the teamwork: Even if it was your accomplishment, failing to acknowledge the role of others can come off as egocentric.",
+      "Skipping the challenges: Discussing the obstacles you overcame is crucial for showing your problem-solving skills and resilience."
+    ],
+    "companies": ["Meta", "Apple"],
+    "skills": ["Resilience"]
+  }
+]

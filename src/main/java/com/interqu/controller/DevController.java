@@ -1,5 +1,6 @@
 package com.interqu.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -39,8 +40,9 @@ public class DevController extends API{
     	// Loop through all questions
     	for(Question question: interviewQuestions) {
           //ensure question is unique
+    		System.out.println(questionRepo.findByPositionAndQuestion(question.getPosition(), question.getQuestion()));
           if(questionRepo.findByPositionAndQuestion(question.getPosition(), question.getQuestion())!=null){
-              break;
+              continue;
           }
           
           // set position for now.
@@ -68,6 +70,82 @@ public class DevController extends API{
           double averageAudioRating =  (audioMean + meanSTD * random.nextGaussian()); 
           averageAudioRating =  (Math.round(averageAudioRating * 100.0) / 100.0);
           
+          if(averageAudioRating >= 100) {
+        	  averageAudioRating = 96;
+          }
+          
+          double averageVideoRating = (float) (videoMean + meanSTD * random.nextGaussian()); 
+          averageVideoRating =  (Math.round(averageVideoRating * 100.0) / 100.0);
+          
+          if(averageVideoRating >= 100) {
+        	  averageVideoRating = 96;
+          }
+          
+          double averageContextRating = (float) (contentMean + meanSTD * random.nextGaussian()); 
+          averageContextRating =  (Math.round(averageContextRating * 100.0) / 100.0);
+          
+          if(averageContextRating >= 100) {
+        	  averageContextRating = 96;
+          }
+          
+          double averageOverallRating = (averageAudioRating + averageVideoRating + averageContextRating)/3;
+          averageOverallRating =  (Math.round(averageOverallRating * 100.0) / 100.0);
+
+    	  int max = 10023;
+		  int min = 24;
+    	  int ratings = random.nextInt((max-min) + 1) + min;
+    	  question.setRatings(ratings);	
+    	  boolean isVerified = true;
+    	  question.setVerified(isVerified);
+    	  
+          // putting RND data into question obj.
+          question.setAverageAudioRating(averageAudioRating);
+          question.setAverageVideoRating(averageVideoRating);
+          question.setAverageContextRating(averageContextRating);
+          question.setAverageOverallRating(averageOverallRating);
+          
+          //FOR DEBUG
+          logger.debug(question.toString());
+          
+          //save to db
+          questionRepo.save(question);
+    	}
+    	return ResponseEntity.ok("Success.");
+    }
+    
+    //FOR DEV ONLY
+    // Updates questions from v1 to v2
+    @PostMapping("/updateQuestions")
+    public ResponseEntity<String> updateQuestions() throws Exception{
+    	//process here
+    	List<Question> interviewQuestions = questionRepo.findAll();
+    	// Loop through all questions
+    	for(Question question: interviewQuestions) {
+         
+    	  // Add company list
+    	  String[] companies = {"Meta", "Google", "Apple"};
+    	  question.setCompanies(Arrays.asList(companies));
+    	  // Add skills
+    	  String[] skills = {"C++"};
+    	  question.setSkills(Arrays.asList(skills));
+    	  Random random = new Random();
+    	  int max = 10023;
+		  int min = 24;
+    	  int ratings = random.nextInt((max-min) + 1) + min;
+    	  question.setRatings(ratings);	
+    	  boolean isVerified = true;
+    	  question.setVerified(isVerified);
+    		
+    	  
+          double audioMean = 68;
+          double videoMean = 53;
+          double contentMean = 74;
+          double meanSTD = 19;
+          
+          // calculating means
+          double averageAudioRating =  (audioMean + meanSTD * random.nextGaussian()); 
+          averageAudioRating =  (Math.round(averageAudioRating * 100.0) / 100.0);
+          
           double averageVideoRating = (float) (videoMean + meanSTD * random.nextGaussian()); 
           averageVideoRating =  (Math.round(averageVideoRating * 100.0) / 100.0);
           
@@ -76,15 +154,14 @@ public class DevController extends API{
           
           double averageOverallRating = (averageAudioRating + averageVideoRating + averageContextRating)/3;
           averageOverallRating =  (Math.round(averageOverallRating * 100.0) / 100.0);
-          
+    	  
           // putting RND data into question obj.
-          question.setDifficultyRating(difficultyRating);
           question.setAverageAudioRating(averageAudioRating);
           question.setAverageVideoRating(averageVideoRating);
           question.setAverageContextRating(averageContextRating);
           question.setAverageOverallRating(averageOverallRating);
-          
-          //FOR DEBUG
+    	  
+          //DEBUG
           logger.debug(question.toString());
           
           //save to db

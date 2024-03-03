@@ -12,7 +12,7 @@ public interface InterviewQuestionRepository extends MongoRepository<Question, S
 
     public List<Question> findByPosition(String position);
 
-    public List<Question> findByPositionAndQuestion(String position, String question);
+    public Question findByPositionAndQuestion(String position, String question);
     
     public List<Question> findByPositionContainingAndQuestionContaining(String position, String question);
 

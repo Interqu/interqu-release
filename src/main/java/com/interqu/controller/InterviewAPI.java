@@ -33,9 +33,8 @@ public class InterviewAPI extends API{
         return positionRepo.findAll();
     }
 
-    @PostMapping("/getQuestions")
-    public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) {
-    	
+    @PostMapping(value = "/getQuestions")
+    public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) throws Exception{
     	// Search by Id
     	if(questionQuery.getQuestionId() != null && !questionQuery.getQuestionId().isEmpty()) {
     		return iqRepo.findByQuestionId(questionQuery.getQuestionId());

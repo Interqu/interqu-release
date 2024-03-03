@@ -161,7 +161,7 @@ public class UserAPI extends API{
 	
 	@PostMapping("/user-verification")
 	@ResponseBody
-	public ResponseEntity<String> verifyUser(@RequestBody String token, HttpServletRequest request) throws UserNotLoggedIn{
+	public ResponseEntity<?> verifyUser(@RequestBody String token, HttpServletRequest request) throws UserNotLoggedIn{
         // Find user in database
         User user = userRepo.findByVerificationCode(token);
         System.out.println(token);
@@ -177,7 +177,7 @@ public class UserAPI extends API{
         user.setVerified(true);
         user.setEnabled(true);
         userRepo.save(user);
-        return ResponseEntity.ok("User successfully verified.");
+        return ResponseEntity.ok().build();
 	}
 
 }
