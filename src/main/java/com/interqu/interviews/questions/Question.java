@@ -13,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Document("interview_questions")
 public class Question {
-
-	private String id;
 	
     @Id
     @Field("question_id")
@@ -25,7 +23,7 @@ public class Question {
     @JsonProperty("position")
     private String position;
     
-    @Field("quesiton")
+    @Field("question")
     @JsonProperty("question")
     private String question;
     
@@ -40,6 +38,7 @@ public class Question {
     @Field("rating")
     @JsonProperty("rating")
     private int ratings;
+    
     @Field("is_verified")
     @JsonProperty("is_verified")
     private boolean isVerified;
