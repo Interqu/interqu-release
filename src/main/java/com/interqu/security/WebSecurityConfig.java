@@ -50,6 +50,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    CorsConfiguration config = new CorsConfiguration();
 	    config.setAllowCredentials(true);
+	    //TODO put in env file
 	    config.addAllowedOrigin("http://localhost:4200");
 	    config.addAllowedOrigin("https://interqu.com/");
 	    config.addAllowedHeader("*");
@@ -65,8 +66,6 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
             String username = authentication.getName();
             String password = authentication.getCredentials().toString();
-            System.out.println("Username entered by the user: " + username);
-            System.out.println("Password entered by the user: " + password);
 
             UserDetails userDetails = userDetailsService().loadUserByUsername(username);
             if (!passwordEncoder().matches(password, userDetails.getPassword())) {

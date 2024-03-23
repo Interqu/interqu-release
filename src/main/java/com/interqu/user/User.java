@@ -1,17 +1,11 @@
 package com.interqu.user;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 
 import org.springframework.data.annotation.Id;
@@ -19,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.interqu.interviews.Interview;
 import com.interqu.roles.Role;
 import com.interqu.subscription.Subscription;
 

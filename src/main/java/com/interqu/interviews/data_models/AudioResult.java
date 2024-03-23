@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.interqu.interviews.emotions.AudioEmotions;
 
 public class AudioResult {
 
@@ -14,7 +15,7 @@ public class AudioResult {
 	
 	@Field("audio_timestamps")
 	@JsonProperty("audio_timestamps")
-	private List<String> timestamps;
+	private List<AudioEmotions> timestamps;
 	
 	@Field("audio_feedback")
 	@JsonProperty("audio_feedback")
@@ -24,7 +25,7 @@ public class AudioResult {
 		
 	}
 	
-	public AudioResult(float score, List<String> timestamps, String feedback) {
+	public AudioResult(float score, List<AudioEmotions> timestamps, String feedback) {
 		super();
 		this.score = score;
 		this.timestamps = timestamps;
@@ -36,10 +37,10 @@ public class AudioResult {
 	public void setScore(float score) {
 		this.score = score;
 	}
-	public List<String> getTimestamps() {
+	public List<AudioEmotions> getTimestamps() {
 		return timestamps;
 	}
-	public void setTimestamps(List<String> timestamps) {
+	public void setTimestamps(List<AudioEmotions> timestamps) {
 		this.timestamps = timestamps;
 	}
 	public String getFeedback() {

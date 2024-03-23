@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.interqu.interviews.emotions.VisualEmotions;
 
 public class VideoResult {
 
@@ -14,7 +15,7 @@ public class VideoResult {
 	
 	@Field("video_timestamps")
 	@JsonProperty("video_timestamps")
-	private List<String> timestamps;
+	private List<VisualEmotions> timestamps;
 	
 	@Field("video_feedback")
 	@JsonProperty("video_feedback")
@@ -24,7 +25,7 @@ public class VideoResult {
 		
 	}
 	
-	public VideoResult(float score, List<String> timestamps, String feedback) {
+	public VideoResult(float score, List<VisualEmotions> timestamps, String feedback) {
 		super();
 		this.score = score;
 		this.timestamps = timestamps;
@@ -36,10 +37,10 @@ public class VideoResult {
 	public void setScore(float score) {
 		this.score = score;
 	}
-	public List<String> getTimestamps() {
+	public List<VisualEmotions> getTimestamps() {
 		return timestamps;
 	}
-	public void setTimestamps(List<String> timestamps) {
+	public void setTimestamps(List<VisualEmotions> timestamps) {
 		this.timestamps = timestamps;
 	}
 	public String getFeedback() {
