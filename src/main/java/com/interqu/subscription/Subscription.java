@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 public class Subscription {
 
+	//TODO make enum
 	public static final String FREE = "FREE_PLAN";
 	public static final String TIER_1 = "INTERMEDIATE_PLAN";
 	public static final String TIER_2 = "PREMIUM_PLAN";

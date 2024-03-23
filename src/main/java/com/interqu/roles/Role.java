@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import javax.persistence.Id;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document("roles")
 public class Role {
 	
-	public static final String USER = "USER";
+	enum Roles{
+		USER,
+		ADMIN,
+	}
 	
     @Id
     private String id;

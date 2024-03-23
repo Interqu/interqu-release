@@ -3,7 +3,6 @@ package com.interqu.controller;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.UUID;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

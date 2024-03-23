@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.interqu.db.RoleRepository;
 import com.interqu.db.UserRepository;
 import com.interqu.roles.Role;
 
@@ -21,9 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 
 	@Autowired
 	private UserRepository userRepo;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

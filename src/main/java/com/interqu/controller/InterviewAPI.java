@@ -1,37 +1,21 @@
 package com.interqu.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.interqu.interviews.InterviewVideoData;
-import com.interqu.interviews.Position;
 import com.interqu.interviews.Result;
 import com.interqu.interviews.questions.Question;
-import com.interqu.user.User;
-import com.interqu.utils.Utils;
-
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/interview")
 public class InterviewAPI extends API{
-
-    @PostMapping("/getPositions")
-    public List<Position> getPositions() {
-        return positionRepo.findAll();
-    }
 
     @PostMapping(value = "/getQuestions")
     public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) throws Exception{
@@ -68,36 +52,4 @@ public class InterviewAPI extends API{
     	}
     	return ResponseEntity.ok(irService.findInterviewResultsByEmail(userDetails.getUsername()));
     }
-    
-    @PostMapping("/uploadInterview")
-    public ResponseEntity<?> processInterview(HttpServletRequest request, @RequestParam("video") MultipartFile file, @RequestParam("questionId") String questionId){
-        InterviewVideoData ivd;
-        User user = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = null;
-        if (principal instanceof UserDetails) {
-             username = ((UserDetails)principal).getUsername();
-             user = userRepo.findByEmail(username);
-        }
-        try{
-            if(user == null){
-                return new ResponseEntity<>("You do not have access to this page!", HttpStatus.FORBIDDEN);
-            }
-            Question question = questionRepo.findByQuestionId(questionId).get(0);
-            
-            ivd= Utils.setInterviewVideoData(user, question);
-            ivdRepo.insert(ivd);
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        try{
-           fileService.uploadFile(ivd.getFileName(), file);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
-        }catch(Exception e){
-            ivdRepo.delete(ivd);
-            e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 }

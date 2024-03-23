@@ -13,8 +13,6 @@ import org.json.JSONObject;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.internal.connection.Connection;
-
 @Service
 public class HttpConnectionService {
      
