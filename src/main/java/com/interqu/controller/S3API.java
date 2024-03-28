@@ -15,35 +15,53 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 
 @RestController
 @RequestMapping("/api/s3")
-public class S3API extends API{
+public class S3API extends API {
 
-	@Autowired
-	private AmazonS3 amazonS3;
-	
-	//TODO places the bucket names in env file.
-	private String getBucket(String fileName) {
-		if(fileName.contains("resume")) {
-			return "interqu-resumes";
-		}else if(fileName.contains("video")) {
-			return "interqu-video";
-		}
-		return "interqu";
-	}
-	
+    @Autowired
+    private AmazonS3 amazonS3;
+
+    // TODO places the bucket names in env file.
+    private String getBucket(String fileName) {
+        if (fileName.contains("resume")) {
+            return "interqu-resumes";
+        } else if (fileName.contains("video")) {
+            return "interqu-video";
+        }
+        return "interqu";
+    }
+
     @GetMapping("/generate-presigned-url")
     public URL generatePresignedUrl(@RequestParam("fileName") String fileName) {
-    	logger.info("/generate-presigned-url: " + " generating presigned url. filename: " + fileName);
+        logger.info("/generate-presigned-url: " + " generating presigned url. filename: " + fileName);
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
         expTimeMillis += 1000 * 60 * 5; // 5 minutes
         expiration.setTime(expTimeMillis);
 
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(getBucket(fileName), fileName)
-                        .withMethod(HttpMethod.PUT)
-                        .withExpiration(expiration);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(getBucket(fileName),
+                fileName)
+                .withMethod(HttpMethod.PUT)
+                .withExpiration(expiration);
 
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
     }
-	
+
+    @GetMapping("/generate-access-url")
+    public URL generateAccessUrl(
+            @RequestParam("fileName") String fileName,
+            @RequestParam("bucketName") String bucketName) {
+        logger.info(
+                "/generate-access-url: " + " generating access url. filename: " + fileName + " bucket: " + bucketName);
+        Date expiration = new Date();
+        long expTimeMillis = expiration.getTime();
+        expTimeMillis += 1000 * 60 * 60 * 5; // 5 hours
+        expiration.setTime(expTimeMillis);
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName, fileName)
+                .withMethod(HttpMethod.GET)
+                .withExpiration(expiration);
+
+        return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+    }
+
 }
