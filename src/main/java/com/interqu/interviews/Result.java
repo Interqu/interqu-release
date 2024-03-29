@@ -27,6 +27,14 @@ public class Result {
 	@Field("question_id")
 	@JsonProperty("question_id")
     private String questionId; // question the interview result relates to
+	
+	@Field("question")
+	@JsonProperty("question")
+	private String question;
+	
+	@Field("position")
+	@JsonProperty("position")
+	private String position;
     
 	@Field("timestamp")
 	@JsonProperty("timestamp")
@@ -110,6 +118,22 @@ public class Result {
 
 	public void setAnalysis(AnalysisResult analysis) {
 		this.analysis = analysis;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	@Override
