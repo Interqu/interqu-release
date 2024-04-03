@@ -30,13 +30,21 @@ public class InterviewResultService {
                 .from("interview_questions") // The collection to join
                 .localField("question_id") // Field in the users collection
                 .foreignField("question_id") // Corresponding field in interviewResults collection
-                .as("users");
+                .as("question");
         
+
+        AddFieldsOperation operation = Aggregation.addFields()
+        .addFieldWithValue("question", "$question.question").addFieldWithValue("position", "$question.position").build();
+
+
         // Define the aggregation pipeline
         Aggregation aggregation = Aggregation.newAggregation(
                 lookupInterviewResults,
-//                lookupQuestionId,
-                matchUserByEmail
+                matchUserByEmail,
+                Aggregation.unwind("users_data"),
+                lookupQuestionId,
+                Aggregation.unwind("question"),
+                operation
         );
 
         // Execute the aggregation
