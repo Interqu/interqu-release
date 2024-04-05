@@ -44,10 +44,9 @@ public class InterviewAPI extends API{
 
     @PostMapping("/getInterviewResult")
     public ResponseEntity<?> getInterviewResult(@AuthenticationPrincipal UserDetails userDetails, @RequestBody(required = false) Result result) {
-    	System.out.println(result);
     	if(result != null) {
     		if(result.getId() != null && !result.getId().isEmpty()) {
-    			return ResponseEntity.ok(irRepo.findById(result.getId()));
+    			return ResponseEntity.ok(irService.findInterviewResultsById(result.getId(), userDetails.getUsername()));
     		}
     	}
     	return ResponseEntity.ok(irService.findInterviewResultsByEmail(userDetails.getUsername()));
