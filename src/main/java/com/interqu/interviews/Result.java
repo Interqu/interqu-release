@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.interqu.interviews.data_models.AnalysisResult;
+import com.interqu.interviews.questions.Question;
 
 @Document("interview_results")
 public class Result {
@@ -30,11 +31,7 @@ public class Result {
 	
 	@Field("question")
 	@JsonProperty("question")
-	private String question;
-	
-	@Field("position")
-	@JsonProperty("position")
-	private String position;
+	private Question question;
     
 	@Field("timestamp")
 	@JsonProperty("timestamp")
@@ -120,26 +117,19 @@ public class Result {
 		this.analysis = analysis;
 	}
 
-	public String getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-
-	public String getPosition() {
-		return position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Result [id=" + id + ", fileId=" + fileId + ", userId=" + userId + ", questionId=" + questionId
 				+ ", timestamp=" + timestamp + ", videoLength=" + videoLength + ", analysis=" + analysis + "]";
+	}
+
+	public Question getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 	
 	
