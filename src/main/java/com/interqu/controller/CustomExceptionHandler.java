@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.interqu.InterquReleaseApplication;
 import com.interqu.exceptions.IncorrectCredentialsException;
 import com.interqu.exceptions.NoEmailOrPassException;
+import com.interqu.exceptions.QuestionNotFoundException;
 import com.interqu.exceptions.UserNotFoundException;
 import com.interqu.exceptions.UserAlreadyRegisteredException;
 
@@ -32,6 +33,12 @@ public class CustomExceptionHandler {
 	
 	@ExceptionHandler(NoEmailOrPassException.class)
 	public ResponseEntity<String> handleNoEmailOrPassException(NoEmailOrPassException e){
+		logger.warn(e.getMessage());
+		return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(e.getMessage());
+	}
+
+	@ExceptionHandler(QuestionNotFoundException.class)
+	public ResponseEntity<String> handleQuestionNotFoundException(QuestionNotFoundException e){
 		logger.warn(e.getMessage());
 		return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(e.getMessage());
 	}

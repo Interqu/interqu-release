@@ -1,5 +1,7 @@
 package com.interqu.interviews;
 
+import java.util.Date;
+
 import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,10 +34,14 @@ public class Result {
 	@Field("question")
 	@JsonProperty("question")
 	private Question question;
+
+	@Field("status")
+	@JsonProperty("status")
+	private Status status;
     
 	@Field("timestamp")
 	@JsonProperty("timestamp")
-    private String timestamp; // the time the user took the interview
+    private Date timestamp; // the time the user took the interview
     
 	@Field("video_length")
 	@JsonProperty("video_length")
@@ -47,18 +53,6 @@ public class Result {
 
 	public Result() {
 		
-	}
-	
-	public Result(String id, String fileId, String userId, String questionId, String timestamp, int videoLength,
-			AnalysisResult analysis) {
-		super();
-		this.id = id;
-		this.fileId = fileId;
-		this.userId = userId;
-		this.questionId = questionId;
-		this.timestamp = timestamp;
-		this.videoLength = videoLength;
-		this.analysis = analysis;
 	}
 
 	public String getId() {
@@ -93,14 +87,6 @@ public class Result {
 		this.questionId = questionId;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
-
 	public int getVideoLength() {
 		return videoLength;
 	}
@@ -117,13 +103,6 @@ public class Result {
 		this.analysis = analysis;
 	}
 
-	
-	@Override
-	public String toString() {
-		return "Result [id=" + id + ", fileId=" + fileId + ", userId=" + userId + ", questionId=" + questionId
-				+ ", timestamp=" + timestamp + ", videoLength=" + videoLength + ", analysis=" + analysis + "]";
-	}
-
 	public Question getQuestion() {
 		return question;
 	}
@@ -131,7 +110,26 @@ public class Result {
 	public void setQuestion(Question question) {
 		this.question = question;
 	}
-	
-	
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [id=" + id + ", fileId=" + fileId + ", userId=" + userId + ", questionId=" + questionId
+				+ ", timestamp=" + timestamp + ", videoLength=" + videoLength + ", analysis=" + analysis + "]";
+	}
 }
