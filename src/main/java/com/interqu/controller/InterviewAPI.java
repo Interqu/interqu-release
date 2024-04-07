@@ -1,5 +1,7 @@
 package com.interqu.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class InterviewAPI extends API{
     public List<Question> getQuestionByPosition(@RequestBody Question questionQuery) throws Exception{
     	// Search by Id
     	if(questionQuery.getQuestionId() != null && !questionQuery.getQuestionId().isEmpty()) {
-    		return iqRepo.findByQuestionId(questionQuery.getQuestionId());
+    		return new ArrayList<>(Arrays.asList(iqRepo.findByQuestionId(questionQuery.getQuestionId())));
     	}
     	
     	// Search by question and position
