@@ -67,7 +67,7 @@ public class S3API extends API{
         irRepo.save(tempResult);
 
         // Generate Presigned Url.
-        URL presigned = s3.generateInterviewPresignedUrl(videoFileName);
+        URL presigned = s3.generateInterviewPresignedUrl(videoFileName, user.getId(), questionId, interviewId);
         return new S3PresignedIObject(presigned, videoFileName, interviewId);
     }
 }
