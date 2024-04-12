@@ -1,6 +1,7 @@
 package com.interqu.controller;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class S3API extends API{
         String interviewId = interviewUtils.generateVideoId();
     
         // Save Date
-        Date now = new Date();// TODO use UTC Time
+        Date now = new Date();
         
         // Generate video file name.
         String videoFileName = interviewUtils.generateVideoFileName(user.getId(), interviewId, questionId, now);
