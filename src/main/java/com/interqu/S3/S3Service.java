@@ -2,9 +2,6 @@ package com.interqu.S3;
 
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +31,6 @@ public class S3Service {
 
         // Injecting metadata
         generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "user-id", userId);
-        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "file-id", fileName);
         generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "question-id", questionId);
         generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "interview-id", interviewId);
 

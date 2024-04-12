@@ -9,7 +9,9 @@ import org.springframework.stereotype.Component;
 public class InterviewUtils {
     
     public String generateVideoFileName(String userId, String interviewId, String questionId, Date time){
-        return userId + "-" + interviewId + "-" + questionId + "-" + time.toString() + "-INTERQU-VIDEO.mp4";
+        // Format Date (replace space and colon with -)
+        String nowString = time.toString().replace(" ", "-").replace(":", "-");
+        return userId + "-" + interviewId + "-" + questionId + "-" + nowString + "-interqu-interview.mp4";
     }
 
     public String generateVideoId(){
