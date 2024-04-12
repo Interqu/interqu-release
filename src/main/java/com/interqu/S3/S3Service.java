@@ -33,10 +33,10 @@ public class S3Service {
                         .withExpiration(expiration);
 
         // Injecting metadata
-        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "user_id", userId);
-        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "file_id", fileName);
-        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "question_id", questionId);
-        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "interview_id", interviewId);
+        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "user-id", userId);
+        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "file-id", fileName);
+        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "question-id", questionId);
+        generatePresignedUrlRequest.addRequestParameter(AWS_METADATA_PREFIX + "interview-id", interviewId);
 
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
     }
