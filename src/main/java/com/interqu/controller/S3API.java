@@ -1,7 +1,6 @@
 package com.interqu.controller;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import com.interqu.user.User;
 
 @RestController
 @RequestMapping("/api/s3")
-public class S3API extends API{
+public class S3API extends API {
 
     @Autowired
     private S3Service s3;
@@ -71,4 +70,5 @@ public class S3API extends API{
         URL presigned = s3.generateInterviewPresignedUrl(videoFileName, user.getId(), questionId, interviewId);
         return new S3PresignedIObject(presigned, videoFileName, interviewId);
     }
+
 }

@@ -37,4 +37,17 @@ public class S3Service {
         return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
     }
 
+    public URL generateInterviewAccessUrl(String fileName){
+        Date expiration = new Date();
+        long expTimeMillis = expiration.getTime();
+        expTimeMillis += 1000 * 60 * 60 * 5; // 5 hours
+        expiration.setTime(expTimeMillis);
+
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(INTERQU_VIDEO_BUCKET, fileName)
+                .withMethod(HttpMethod.GET)
+                .withExpiration(expiration);
+
+        return amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+    }
+
 }
