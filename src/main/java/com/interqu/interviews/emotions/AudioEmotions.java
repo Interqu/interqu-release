@@ -8,5 +8,5 @@ public enum AudioEmotions {
     ANGRY,
     FEAR,
     DISGUST,
-    SUPRISE
+    SURPRISE
 }
