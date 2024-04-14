@@ -15,9 +15,9 @@ import com.interqu.interviews.questions.Question;
 public class Result {
     
 	@Id
-	@Field("id")
-	@JsonProperty("id")
-	private String id; // Id of the interview
+	@Field("interview_id")
+	@JsonProperty("interview_id")
+	private String interviewId; // Id of the interview
 	
 	@Field("file_id")
 	@JsonProperty("file_id")
@@ -55,12 +55,12 @@ public class Result {
 		
 	}
 
-	public String getId() {
-		return id;
+	public String getInterviewId() {
+		return interviewId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setInterviewId(String id) {
+		this.interviewId = id;
 	}
 
 	public String getFileId() {
@@ -129,7 +129,7 @@ public class Result {
 
 	@Override
 	public String toString() {
-		return "Result [id=" + id + ", fileId=" + fileId + ", userId=" + userId + ", questionId=" + questionId
+		return "Result [interview_id=" + interviewId + ", fileId=" + fileId + ", userId=" + userId + ", questionId=" + questionId
 				+ ", timestamp=" + timestamp + ", videoLength=" + videoLength + ", analysis=" + analysis + "]";
 	}
 }

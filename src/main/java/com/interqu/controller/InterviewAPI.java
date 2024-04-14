@@ -47,8 +47,8 @@ public class InterviewAPI extends API{
     @PostMapping("/getInterviewResult")
     public ResponseEntity<?> getInterviewResult(@AuthenticationPrincipal UserDetails userDetails, @RequestBody(required = false) Result result) {
     	if(result != null) {
-    		if(result.getId() != null && !result.getId().isEmpty()) {
-    			return ResponseEntity.ok(irService.findInterviewResultsById(result.getId(), userDetails.getUsername()));
+    		if(result.getInterviewId() != null && !result.getInterviewId().isEmpty()) {
+    			return ResponseEntity.ok(irService.findInterviewResultsById(result.getInterviewId(), userDetails.getUsername()));
     		}
     	}
     	return ResponseEntity.ok(irService.findInterviewResultsByEmail(userDetails.getUsername()));
