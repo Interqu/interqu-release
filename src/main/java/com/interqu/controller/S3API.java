@@ -59,7 +59,7 @@ public class S3API extends API{
 
         // Create interview document & setting all important information
         Result tempResult = new Result();
-        tempResult.setId(interviewId);
+        tempResult.setInterviewId(interviewId);
         tempResult.setFileId(videoFileName);
         tempResult.setTimestamp(now);
         tempResult.setUserId(user.getId());

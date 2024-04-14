@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class InterviewResultService {
 
-        private static final String ID = "id";
+        private static final String ID = "interview_id";
         private static final String USER_COL_USER_ID = "_id";
         private static final String EMAIL = "email";
         private static final String USERS = "users";
