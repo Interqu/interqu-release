@@ -11,8 +11,6 @@ public class CustomUserDetails implements UserDetails{
 	private User user;
 	private List<GrantedAuthority> authorities;
 	
-
-	
 	public CustomUserDetails(User user, List<GrantedAuthority> authorities) {
 		this.authorities = authorities;
 		this.user = user;
@@ -55,6 +53,14 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return user.isEnabled() && user.isVerified();
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	
