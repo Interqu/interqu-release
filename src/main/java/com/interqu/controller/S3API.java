@@ -17,6 +17,7 @@ import com.interqu.exceptions.UserNotFoundException;
 import com.interqu.interviews.InterviewUtils;
 import com.interqu.interviews.Result;
 import com.interqu.interviews.Status;
+import com.interqu.interviews.data_models.AnalysisResult;
 import com.interqu.interviews.questions.Question;
 import com.interqu.models.S3PresignedIObject;
 import com.interqu.user.User;
@@ -61,6 +62,8 @@ public class S3API extends API {
         tempResult.setInterviewId(interviewId);
         tempResult.setFileId(videoFileName);
         tempResult.setTimestamp(now);
+        tempResult.setQuestionId(questionId);
+        tempResult.setAnalysis(new AnalysisResult());
         tempResult.setUserId(user.getId());
         tempResult.setStatus(Status.SUBMITTED);
         // Upload to MongoDb
